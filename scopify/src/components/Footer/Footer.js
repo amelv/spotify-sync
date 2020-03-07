@@ -1,13 +1,14 @@
 import React from "react"
-import {SocialIcon} from "react-social-icons"
 import {withRouter} from "react-router-dom"
+import { Container } from 'semantic-ui-react'
 
 const Footer = (props) => {
 
   return(
-    <div>
-    </div>
+    <Container>
+      <p> Provider by @amelv </p>
+    </Container>
   )
 } 
 
-export withRouter(Footer)
+export default withRouter(Footer)

@@ -29,23 +29,23 @@ import { Divider } from 'semantic-ui-react'
     }
 `*/
 
-const LandingPage = (props) => {
+const GeneratorPage = (props) => {
   
   return (
-    <Container style={{display: "flex", 
-      background: "rgb(127,24,161)", background: "linear-gradient(90deg, rgba(127,24,161,1) 70%, rgba(20,200,20,1) 100%)", 
-      flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh"}} >
-        <Header as='h1' style={{fontSize: "10rem", margin: "1rem"}}>𝕾𝖈𝖔𝖕𝖎𝖋𝖞</Header>
-        <p style={{fontSize: "2rem", margin: "1rem"}}> Horoscoped Playlists </p>
-        <Button size='massive' style={{margin: "1rem"}} content='Get Started' />
+    <Container>
+      <Header as='h1'>Scopify</Header>
       <Divider />
+      <Header as='h2'> Horoscoped Playlists </Header>
+      <p>Test test test test test test</p>
       <Divider />
+      <Button content='Log in to Spotify' />
+
 
     </Container>
   )
 }
 
-LandingPage.propTypes = {
+GeneratorPage.propTypes = {
 }
 
-export default withRouter(LandingPage)
+export default withRouter(GeneratorPage)

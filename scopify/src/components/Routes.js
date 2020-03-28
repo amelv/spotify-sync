@@ -19,6 +19,7 @@ export default class Routes extends React.Component {
                     <Route exact path='/about' component={() =>  <AboutPage />} />
 
                     <Route exact path='/settings' component={() =>  <GeneratorPage />} />
+                    <Route path='/step:num' component={withRouter(GeneratorPage)} />
                     <Route component={() => <NotFound />} />
                 </Switch>
             </Suspense>

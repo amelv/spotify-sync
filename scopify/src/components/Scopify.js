@@ -1,15 +1,21 @@
-import React from "react"
+import React, {useState} from "react"
 import Header from "./Header/Header"
 import Footer from "./Footer/Footer"
 import {Helmet} from "react-helmet"
 import Routes from "./Routes.js"
+import {AuthContext} from './AuthContext'
 
 window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
-export default class Scopify extends React.Component {
-    render() {
-        return (
-            <div style={{minHeight: "100vh"}}>
+export const Scopify = () => {
+
+  const [loggedIn, setLoggedIn] = useState(false)
+  const [accessToken, setToken] = useState('')
+  const value = { loggedIn, accessToken, setLoggedIn, setToken }
+
+  return (
+    <AuthContext.Provider value={value}>
+            <div style={{minHeight: "100vh", background: "rgb(127,24,161)"}}>
                 <Helmet>
                     <title>Scopify 🔮</title>
                     <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,7 +26,8 @@ export default class Scopify extends React.Component {
                 <Header />
                 <Routes />
                 <Footer />
-            </div>
-        )
-    }
+              </div>
+      </AuthContext.Provider>
+   )
+    
 }

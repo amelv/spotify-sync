@@ -4,8 +4,7 @@ import {BrowserRouter} from "react-router-dom"
 import Loading from "./components/Loading/Loading"
 import 'semantic-ui-css/semantic.min.css'
 
-
-const Scopify = lazy(() => import("./components/Scopify"))
+import {Scopify} from "./components/Scopify"
 
 ReactDOM.render((
     <BrowserRouter>

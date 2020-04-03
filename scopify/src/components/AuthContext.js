@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react"
 
 const AuthContext = React.createContext({
-  loggedIn: false,
-  accessToken: '',
-  setToken: () => {}
+    loggedIn: false,
+    accessToken: "",
+    setToken: () => {}
 })
 
 export {AuthContext}

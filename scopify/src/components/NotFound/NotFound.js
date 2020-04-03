@@ -1,8 +1,8 @@
 import React from "react"
-import styled from 'styled-components'
+import styled from "styled-components"
 
 const OuterWrapper = styled.div.attrs({
-    className : 'atlasWidth'
+    className : "atlasWidth"
 })`
     width: 100%;
     height: 100%;
@@ -37,13 +37,13 @@ const InnerWrapper = styled.div`
 `
 
 const NotFound = () =>
-   (
-    <OuterWrapper>
-        <InnerWrapper>
-            <h2>No, it's not interference from the quantum world.</h2>
-            <p>We just don't have a page that lives at this address.</p>
+    (
+        <OuterWrapper>
+            <InnerWrapper>
+                <h2>No, it's not interference from the quantum world.</h2>
+                <p>We just don't have a page that lives at this address.</p>
       
-        </InnerWrapper>
-    </OuterWrapper>
-   )
+            </InnerWrapper>
+        </OuterWrapper>
+    )
 export default NotFound

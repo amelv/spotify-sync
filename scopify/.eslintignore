@@ -1,0 +1,4 @@
+/client/assets
+/client/entries/*/
+/dist/
+/node_modules/

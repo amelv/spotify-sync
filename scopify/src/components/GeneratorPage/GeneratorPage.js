@@ -24,24 +24,6 @@ import Generator from "../Generator/Generator"
 
 const spotifyWebApi = new Spotify()
 
-/*const StyledGrid = styled(Grid)`
-    margin: auto;
-    display: flex;
-    flex-direction: column;
-    padding-left: .5rem;
-    padding-right: .5rem;
-    height: 100%;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    justify-content: space-around;
-    align-items: center;
-    
-    @media screen and (min-width: 60em){
-        flex-direction: row;
-    }
-`*/
-
-
 const HoroscopeInput = (props) => {
     let zodiacIcons = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"]
     let zodiacNames = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
@@ -52,19 +34,55 @@ const HoroscopeInput = (props) => {
     }
 
     let grid = _.times(3, (row) => (
-        <Grid.Row style={{display: "flex", flexDirection: "row", alignItems: "center", textAlign: "center", flexWrap: "nowrap"}} key={row}>
-            {_.times(4, (col) => (
-                <Grid.Column key={4*row + col} style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", flexWrap: "nowrap"}}>
-                    <Button onClick={(e) => {
-                        props.setSign(zodiacNames[4*row + col])
-                    }}
-                    value={zodiacNames[4*row + col]} style={{display: "flex", flexDirection: "column", alignItems: "center", alignContent: "center", color: "transparent", width: "150px", height: "150px"}} as={Link} to='/step2'>
-                        <Header as='h1' style={{pointerEvents: "none"}} >{zodiacIcons[4*row + col]}</Header>
-                        <Header as='h3' style={{pointerEvents: "none"}}>{zodiacNames[4*row + col]}</Header>
-                    </Button>
-                </Grid.Column>
-            ))}
-        </Grid.Row> 
+      <Grid.Row 
+        style={{
+          display: "flex", 
+          flexDirection: "row", 
+          alignItems: "center", 
+          textAlign: "center", 
+          flexWrap: "nowrap"
+        }} 
+        key={row}
+      >
+        {_.times(4, (col) => {
+          let pos = 4*row + col
+          return (
+            <Grid.Column 
+              key={pos} 
+              style={{
+                display: "flex", 
+                flexDirection: "column", 
+                alignItems: "center", 
+                textAlign: "center", 
+                flexWrap: "nowrap"
+              }}>
+              <Button 
+                onClick={(e) => {
+                  props.setSign(zodiacNames[4*row + col])
+                }}
+                value={zodiacNames[pos]} 
+                style={{
+                  display: "flex", 
+                  flexDirection: "column", 
+                  alignItems: "center", 
+                  alignContent: "center", 
+                  color: "transparent", 
+                  width: "150px", 
+                  height: "150px"
+                }} 
+                as={Link} 
+                to='/step2'
+              >
+                <Header as='h1' style={{pointerEvents: "none"}}>
+                  {zodiacIcons[pos]}
+                </Header>
+                <Header as='h3' style={{pointerEvents: "none"}}>
+                  {zodiacNames[pos]}
+                </Header>
+              </Button>
+            </Grid.Column>
+        )})}
+      </Grid.Row> 
     ))
   
     return (
@@ -88,32 +106,47 @@ const MoodInput = (props) => {
     }
 
     return (
-        <Container style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
-            <Header as='h1' style={{marginBottom: "5%"}} >Mood</Header>
-            <div style={{display: "flex" ,flexDirection: "row", alignItems: "flex-end"}}>
-                <Header as='h1' floated='left' >Angry</Header>
-                <span style={{display: "inline-block", width: 400}} />
-                <Header as='h1' floated='right' >Bright</Header>
-            </div>
-            <Slider style={{width: 440, height: 400}} axis="xy" x={value.x} y={value.y} onChange={setValue} />     
-            <div style={{display: "flex" ,flexDirection: "row", alignItems: "flex-end"}}>
-                <Header as='h1' floated='left' >Melancholic</Header>
-                <span style={{display: "inline-block", width: 400}} />
-                <Header as='h1' floated='right' >Calm</Header>
-            </div>
-            <Button as={Link} 
-                onClick={(e) => {
-                    props.setValence(value.x / 100.0)
-                    props.setEnergy(value.y / 100.0)
-                }}
-                to='/step3' >Next Step</Button> 
-        </Container>
+      <Container 
+        style={{
+          display: "flex", 
+          flexDirection: "column", 
+          alignItems: "center", 
+          textAlign: "center"
+        }}
+      >
+        <Header as='h1' style={{marginBottom: "5%"}} >Mood</Header>
+        <div 
+          style={{
+            display: "flex",
+            flexDirection: "row", 
+            alignItems: "flex-end"
+          }}
+        >
+          <Header as='h1' floated='left'>Angry</Header>
+          <span style={{display: "inline-block", width: 400}} />
+          <Header as='h1' floated='right' >Bright</Header>
+        </div>
+
+        <Slider style={{width: 440, height: 400}} axis="xy" x={value.x} y={value.y} onChange={setValue} />    
+
+        <div style={{display: "flex" ,flexDirection: "row", alignItems: "flex-end"}}>
+          <Header as='h1' floated='left' >Melancholic</Header>
+          <span style={{display: "inline-block", width: 400}} />
+          <Header as='h1' floated='right' >Calm</Header>
+        </div>
+        <Button as={Link} 
+          onClick={(e) => {
+            props.setValence(value.x / 100.0)
+            props.setEnergy(value.y / 100.0)
+          }}
+          to='/step3'
+        >
+          Next Step
+        </Button> 
+      </Container>
     )
 }
 
-/*const EnergyInput = (props) => {
-
-}*/
 
 const NameInput = (props) => {
     const [value, setValue] = useState("")
@@ -130,7 +163,13 @@ const NameInput = (props) => {
     }
 
     return (
-        <Container style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center"}}>
+      <Container 
+        style={{
+          display: "flex", 
+          flexDirection: "column", 
+          alignItems: "center", 
+          textAlign: "center"
+        }}>
             <Header as='h1'>Mood</Header>
             <Input focus onChange={handleValueChange} placeholder='Enter playlist name...' />
             <Button as={Link} 
@@ -138,7 +177,7 @@ const NameInput = (props) => {
                     props.setName(value)
                 }} 
                 to='/step4'>Generate Playlist</Button> 
-        </Container>
+      </Container>
 
     ) 
 }
@@ -148,7 +187,7 @@ const Finished = (props) => {
     return (
         <Container>
             <Header as='h1' >
-        Check your spotify for the playlist!
+              Check your spotify for the playlist!
             </Header>
             <Generator {...props} />
         </Container>
@@ -174,20 +213,24 @@ const GeneratorPage = (props) => {
 
     return (
         <CSSTransition classNames='fade' timeout={{enter: 500, exit: 300}} >
-            <Container style={{display: "flex", 
-                background: "rgb(127,24,161)", 
-                flexDirection: "column", 
-                alignItems: "center", 
-                justifyContent: "center", 
-                height: "100vh"}} >
-                {num < 4 ? (<InputComponent setSign={setSign} setValence={setValence}
-                    setEnergy={setEnergy} setName={setName} />)
-                    : 
-                    (<InputComponent zodiacSign={zodiacSign} valence={valence}
-                        energy={energy} playlistName={name} />)}
-                <Divider />
-
-            </Container> 
+          <Container 
+            style={{
+              display: "flex", 
+              background: "rgb(127,24,161)", 
+              flexDirection: "column", 
+              alignItems: "center", 
+              justifyContent: "center", 
+              height: "100vh"
+            }} >
+              {num < 4 ? (
+                <InputComponent setSign={setSign} setValence={setValence}
+                setEnergy={setEnergy} setName={setName} />
+              ) : (
+                <InputComponent zodiacSign={zodiacSign} valence={valence}
+                energy={energy} playlistName={name} />
+              )}
+               <Divider />
+          </Container> 
         </CSSTransition>
     )
 }

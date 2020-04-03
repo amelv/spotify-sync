@@ -16,77 +16,73 @@ const spotifyApi = new Spotify();
 const Generator = (props) => {
   const { loggedIn, accessToken, setLoggedIn, setToken } = useContext(AuthContext)
 
-  const { zodiacSign, valence, energy, name } = props
+  const { zodiacSign, valence, energy, playlistName } = props
   
   spotifyApi.setAccessToken(accessToken)
 
   spotifyApi.setPromiseImplementation(Q);
   
   let userId  = ''
+  let playlistId = ''
 
+  let message = ''
+  
+  let playlistOptions = {
+    name: playlistName,
+    description: "Your Daily Horoscope in Music Form",
+    public: false 
+  }
+
+  console.log(energy)
   spotifyApi.getMe()
     .then((data) => {
       console.log(data)
-      userId = data.id
-    }, (error) => {
-      console.error(error)
+      return data.id 
     })
-   
-  const playlistOptions = {
-    name: name,
-    description: 'Your Daily Horoscope in Music Form',
-    public: false // this should be a variable set by user
-  }
-  
-  let playlistId = ''
-
-  spotifyApi.createPlaylist(userId, playlistOptions)
-    .then((data) => {
-      playlistId = data.id 
-    }, (error) => {
-      console.error(error)
+    .then((userId) => {
+      console.log(userId)
+      return spotifyApi.createPlaylist(userId, playlistOptions) 
     })
-
-
-  let topArtists = []
-  
-  // consider getting more and then filtering which ones to use?
-  spotifyApi.getMyTopArtists({limit: 5})
     .then((data) => {
-      data.items.map((artist) => {
-        topArtists.push(artist.id)
+      playlistId = data.id
+      return spotifyApi.getMyTopArtists({limit: 5})
+    })
+    .then((data) => {
+      console.log(data)
+      return data.items.map((artist) => {
+         return artist.id
+       })
+    })
+    .then((topArtists) => {
+      console.log(topArtists)
+      let recOptions = {
+        limit: 20,
+        seed_artists: topArtists,
+        target_valence: valence,
+        target_energy: energy
+      }
+      return spotifyApi.getRecommendations(recOptions)
+    }).then((data) => {
+      console.log(data)
+      return data.tracks.map((track) => {
+        return track.uri
       })
-    }, (error) => {
-      console.error(error)
     })
-  
-  const recOptions = {
-    limit: 20,
-    seed_artists: topArtists,
-    target_valence: valence,
-    target_energy: energy
-  }
-
-  let playlistTracks = []
-
-  spotifyApi.getRecommendations(recOptions)
-    .then((data) => {
-      data.tracks.map((track) => {
-        playlistTracks.push(track.uri)
-      })
-    }, (error) => {
-      console.error(error)
-    })
-  
-  spotifyApi.addTracksToPlaylist(playlistId, playlistTracks)
-    .then((data) => {
+    .then((playlistTracks) => {
+      console.log(playlistTracks)
+      return spotifyApi.addTracksToPlaylist(playlistId, playlistTracks)
+    }).then((data) => {
+      message = data
       console.log(data)
     }, (error) => {
       console.error(error)
     })
 
+   
   return (
-   "" 
+    <p>
+      Generated {playlistName || 'missing'} playlist. 
+    </p>
   )
 
 }

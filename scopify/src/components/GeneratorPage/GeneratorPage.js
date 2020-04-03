@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react"
+import React, {useState, useEffect, useContext} from "react"
 import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
 import Particles from "react-particles-js"
@@ -14,6 +14,7 @@ import { Grid, Image, Input } from 'semantic-ui-react'
 import _ from 'lodash'
 
 import './style.css'
+import '../GlobalStyle.css'
 import Slider from "react-input-slider";
 
 import Spotify from 'spotify-web-api-js';
@@ -48,14 +49,16 @@ const HoroscopeInput = (props) => {
   const handleClick = (e) => {
     let val = e.target.value
     props.setSign(val)
-    console.log(val)
   }
 
   let grid = _.times(3, (row) => (
    <Grid.Row style={{display: 'flex', flexDirection: 'row', alignItems: 'center', textAlign: 'center', flexWrap: "nowrap"}} key={row}>
     {_.times(4, (col) => (
       <Grid.Column key={4*row + col} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', flexWrap: "nowrap"}}>
-        <Button onClick={(e) => props.setSign(zodiacNames[4*row + col])} value={zodiacNames[4*row + col]} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center', color: "transparent", width: "150px", height: "150px"}} as={Link} to='/step2'>
+        <Button onClick={(e) => {
+          props.setSign(zodiacNames[4*row + col])
+        }}
+          value={zodiacNames[4*row + col]} style={{display: 'flex', flexDirection: 'column', alignItems: 'center', alignContent: 'center', color: "transparent", width: "150px", height: "150px"}} as={Link} to='/step2'>
         <Header as='h1' style={{pointerEvents: 'none'}} >{zodiacIcons[4*row + col]}</Header>
         <Header as='h3' style={{pointerEvents: 'none' }}>{zodiacNames[4*row + col]}</Header>
       </Button>
@@ -130,7 +133,11 @@ const NameInput = (props) => {
     <Container style={{display: 'flex', flexDirection: "column", alignItems: 'center', textAlign: 'center' }}>
       <Header as='h1'>Mood</Header>
       <Input focus onChange={handleValueChange} placeholder='Enter playlist name...' />
-      <Button as={Link} onClick={(e) => props.setName(value)} to='/step4'>Generate Playlist</Button> 
+      <Button as={Link} 
+        onClick={(e) => {
+          props.setName(value)
+        }} 
+          to='/step4'>Generate Playlist</Button> 
     </Container>
 
   ) 
@@ -139,7 +146,12 @@ const NameInput = (props) => {
 const Finished = (props) => {
   
   return (
-    <Generator /> 
+    <Container>
+      <Header as='h1' >
+        Check your spotify for the playlist!
+      </Header>
+      <Generator {...props} />
+    </Container>
   )
 }
 
@@ -148,31 +160,35 @@ const GeneratorPage = (props) => {
   const [valence, setValence] = useState(0.5)
   const [energy, setEnergy] = useState(0.5)
   const [name, setName] = useState('')
-    
+  const [isLoaded, setLoaded] = useState(false)
+
   let num = props.match.params.num
   
   let inputs = [HoroscopeInput, MoodInput, NameInput, Finished]
 
   let InputComponent = inputs[num-1]
 
-  console.log(zodiacSign)
-  console.log(valence)
-  console.log(energy)
+  useEffect(() => {
+    setLoaded(true)
+  }, [isLoaded])
+
   return (
+    <CSSTransition classNames='fade' timeout={{enter: 500, exit: 300}} >
    <Container style={{display: "flex", 
       background: "rgb(127,24,161)", 
       flexDirection: "column", 
       alignItems: "center", 
       justifyContent: "center", 
      height: "100vh"}} >
-   {num < 4 ? (<InputComponent setSign={setSign} setValence={setValence}
-   setEnergy={setEnergy} setName={setName} />)
+       {num < 4 ? (<InputComponent setSign={setSign} setValence={setValence}
+        setEnergy={setEnergy} setName={setName} />)
        : 
        (<InputComponent zodiacSign={zodiacSign} valence={valence}
-        energy={energy} name={name} />)}
+        energy={energy} playlistName={name} />)}
       <Divider />
 
     </Container> 
+  </CSSTransition>
   )
 }
 

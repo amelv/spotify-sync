@@ -15,11 +15,11 @@ export default class Routes extends React.Component {
         return (
             <Suspense fallback={<Loading/>}>
                 <Switch>
-                    <Route exact path='/' component={() =>  <LandingPage />} />
-                    <Route exact path='/about' component={() =>  <AboutPage />} />
+                    <Route exact path='/scopify' component={() =>  <LandingPage />} />
+                    <Route exact path='/scopify/about' component={() =>  <AboutPage />} />
 
-                    <Route exact path='/settings' component={() =>  <GeneratorPage />} />
-                    <Route path='/step:num' component={withRouter(GeneratorPage)} />
+                    <Route exact path='/scopify/settings' component={() =>  <GeneratorPage />} />
+                    <Route path='/scopify/step:num' component={withRouter(GeneratorPage)} />
                     <Route component={() => <NotFound />} />
                 </Switch>
             </Suspense>

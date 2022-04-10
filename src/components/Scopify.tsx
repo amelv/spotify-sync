@@ -2,10 +2,8 @@ import React, {useState} from "react"
 import Header from "./Header/Header"
 import Footer from "./Footer/Footer"
 import {Helmet} from "react-helmet"
-import Routes from "./Routes.js"
+import {Routes} from "./Routes.js"
 import {AuthContext} from "./AuthContext"
-
-window.__MUI_USE_NEXT_TYPOGRAPHY_VARIANTS__ = true
 
 export const Scopify = () => {
 
@@ -14,7 +12,7 @@ export const Scopify = () => {
     const value = {loggedIn, accessToken, setLoggedIn, setToken}
 
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider {...{value}}>
             <div style={{minHeight: "100vh", background: "rgb(127,24,161)"}}>
                 <Helmet>
                     <title>Scopify 🔮</title>

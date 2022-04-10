@@ -1,10 +1,5 @@
 import React, {useState, useContext} from "react"
-import PropTypes from "prop-types"
-import {Link} from "react-router-dom"
-import {CSSTransition} from "react-transition-group"
-import {withRouter} from "react-router"
 import Q from "q"
-import Slider from "react-input-slider"
 
 import Spotify from "spotify-web-api-js"
 
@@ -12,22 +7,24 @@ import {AuthContext} from "../AuthContext"
 
 const spotifyApi = new Spotify()
 
+export interface GeneratorProps {
+    zodiacSign: string,
+    valence: number,
+    energy: number,
+    playlistName: string,
+}
 
-const Generator = (props) => {
+const Generator = ({zodiacSign, valence, energy, playlistName}: GeneratorProps) => {
     const {loggedIn, accessToken, setLoggedIn, setToken} = useContext(AuthContext)
 
-    const {zodiacSign, valence, energy, playlistName} = props
-  
     spotifyApi.setAccessToken(accessToken)
 
     spotifyApi.setPromiseImplementation(Q)
   
-    let userId  = ""
-    let playlistId = ""
+    const [userId, setUserId] = useState("")
+    const [playlistId, setPlaylistId] = useState("")
 
-    let message = ""
-  
-    let playlistOptions = {
+    const playlistOptions = {
         name: playlistName,
         description: "Your Daily Horoscope in Music Form",
         public: false 
@@ -44,7 +41,7 @@ const Generator = (props) => {
             return spotifyApi.createPlaylist(userId, playlistOptions) 
         })
         .then((data) => {
-            playlistId = data.id
+            setPlaylistId(data.id)
             return spotifyApi.getMyTopArtists({limit: 5})
         })
         .then((data) => {
@@ -72,7 +69,6 @@ const Generator = (props) => {
             console.log(playlistTracks)
             return spotifyApi.addTracksToPlaylist(playlistId, playlistTracks)
         }).then((data) => {
-            message = data
             console.log(data)
         }, (error) => {
             console.error(error)

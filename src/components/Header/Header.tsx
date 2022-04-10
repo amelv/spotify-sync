@@ -1,13 +1,12 @@
-import React, {useState, useEffect} from "react"
-import PropTypes from "prop-types"
+import React, {useState} from "react"
 import {Link} from "react-router-dom"
 import {withRouter} from "react-router-dom"
 import {Menu} from "semantic-ui-react"
 
-const Header = (props) => {
+const Header = (props: any) => {
     const [activeItem, setActive] = useState("home")
 
-    const handleItemClick = (e, {name}) => setActive(name)
+    const handleItemClick = (e: any, data: any) => setActive(data.name)
   
     return (
         <Menu style={{height: "7vh"}} inverted>
@@ -34,9 +33,6 @@ const Header = (props) => {
             />
         </Menu>
     )
-}
-
-Header.propTypes = {
 }
 
 export default withRouter(Header)

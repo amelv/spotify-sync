@@ -1,16 +1,11 @@
 import React, {useState, useEffect, useContext} from "react"
-import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
-import Particles from "react-particles-js"
-import styled from "styled-components"
-import {CSSTransition} from "react-transition-group"
-import {withRouter} from "react-router"
 
 import {Button} from "semantic-ui-react"
 import {Container} from "semantic-ui-react"
 import {Header} from "semantic-ui-react"
 import {Divider} from "semantic-ui-react"
-import {Grid, Image, Input} from "semantic-ui-react"
+import {Grid} from "semantic-ui-react"
 import _ from "lodash"
 
 import "./style.css"
@@ -24,11 +19,11 @@ import Generator from "../Generator/Generator"
 
 const spotifyWebApi = new Spotify()
 
-const HoroscopeInput = (props) => {
+const HoroscopeInput = (props: any) => {
     let zodiacIcons = ["♈", "♉", "♊", "♋", "♌", "♍", "♎", "♏", "♐", "♑", "♒", "♓"]
     let zodiacNames = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"]
   
-    const handleClick = (e) => {
+    const handleClick = (e: any) => {
         let val = e.target.value
         props.setSign(val)
     }
@@ -148,11 +143,11 @@ const MoodInput = (props) => {
 }
 
 
-const NameInput = (props) => {
+const NameInput = (props: any) => {
     const [value, setValue] = useState("")
 
 
-    const handleValueChange = e => {
+    const handleValueChange = e: any => {
         let value = e.target.value
     
         if (!value) {
@@ -182,7 +177,7 @@ const NameInput = (props) => {
     ) 
 }
 
-const Finished = (props) => {
+const Finished = (props: any) => {
   
     return (
         <Container>
@@ -194,7 +189,7 @@ const Finished = (props) => {
     )
 }
 
-const GeneratorPage = (props) => {
+const GeneratorPage = (props: any) => {
     const [zodiacSign, setSign] = useState("")
     const [valence, setValence] = useState(0.5)
     const [energy, setEnergy] = useState(0.5)
@@ -212,7 +207,6 @@ const GeneratorPage = (props) => {
     }, [isLoaded])
 
     return (
-        <CSSTransition classNames='fade' timeout={{enter: 500, exit: 300}} >
           <Container 
             style={{
               display: "flex", 
@@ -231,7 +225,6 @@ const GeneratorPage = (props) => {
               )}
                <Divider />
           </Container> 
-        </CSSTransition>
     )
 }
 

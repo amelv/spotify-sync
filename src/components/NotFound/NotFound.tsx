@@ -6,7 +6,7 @@ const OuterWrapper = styled.div.attrs({
 })`
     width: 100%;
     height: 100%;
-    *zoom: 1;
+    zoom: 1;
     margin-right: auto; 
     margin-left: auto;
     padding-top: 100px;
@@ -26,7 +26,7 @@ const InnerWrapper = styled.div`
 
     @media screen and (min-width: 60em) {
         width: 100%;
-        _display: inline;
+        display: inline;
         padding: 0;
     }
 

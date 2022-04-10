@@ -1,24 +1,21 @@
 import React, {useState, useEffect, useContext} from "react"
-import PropTypes from "prop-types"
 import {Link} from "react-router-dom"
-import Particles from "react-particles-js"
-import {CSSTransition} from "react-transition-group"
 import {withRouter} from "react-router"
 
 import {Button} from "semantic-ui-react"
 import {Container} from "semantic-ui-react"
-import {Header} from "semantic-ui-react"
 import {Divider} from "semantic-ui-react"
+//@ts-ignore
 import SpotifyLogin from "react-spotify-login"
 import {clientId, redirectUri} from "./settings"
 import {AuthContext} from "../AuthContext"
 
 import "../GlobalStyle.css"
 
-const onSuccess = response => console.log(response)
-const onFailure = response => console.error(response)
+const onSuccess = (response: any) => console.log(response)
+const onFailure = (response: any) => console.error(response)
 
-const LandingPage = (props) => {
+const LandingPage = (props: any) => {
     const {loggedIn, accessToken, setLoggedIn, setToken} = useContext(AuthContext)
     const [isLoaded, setLoaded] = useState(false)
 
@@ -27,7 +24,6 @@ const LandingPage = (props) => {
     }, [])
 
     return (
-        <CSSTransition classNames='fade' timeout={300} in={isLoaded}> 
           <Container 
             style={{
               display: "flex", 
@@ -38,19 +34,19 @@ const LandingPage = (props) => {
               height: "100vh",
             }} 
           >
-            <Header as='h1' style={{fontSize: "10rem", margin: "1rem"}}>
+            <h1 style={{fontSize: "10rem", margin: "1rem"}}>
               𝕾𝖈𝖔𝖕𝖎𝖋𝖞
-            </Header>
+            </h1>
             <p style={{fontSize: "2rem", margin: "1rem"}}> 
               Horoscoped Playlists 
             </p>
             {!loggedIn ? (
-              <Button 
-                as={SpotifyLogin} 
+              <SpotifyLogin 
+                as={Button} 
                 clientId={clientId}
                 redirectUri={redirectUri}
                 scope={"playlist-modify-public,playlist-modify-private,user-top-read"}
-                onSuccess={(response) => {
+                onSuccess={(response: any) => {
                   setToken(response.access_token)
                   setLoggedIn(true)
                   console.log(accessToken)
@@ -69,7 +65,6 @@ const LandingPage = (props) => {
             )}
             <Divider />
         </Container>
-      </CSSTransition>
     )
 }
 

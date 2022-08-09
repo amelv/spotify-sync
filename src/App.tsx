@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import styled from "styled-components";
+import { QueryClient, QueryClientProvider } from "react-query";
+import CssBaseline from "@mui/material/CssBaseline";
 
-function App() {
+import "./index.css";
+import { RequireAuth } from "./components/RequireAuth";
+import { Landing } from "./components/Landing";
+import { Login } from "./components/Login";
+import { UserLoggedIn } from "./components/UserLoggedIn";
+
+const queryClient = new QueryClient();
+
+const AppContainer = styled.div`
+  background-color: #cdc6ff;
+`;
+
+export const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CssBaseline>
+      <AppContainer>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <Landing />
+                  </RequireAuth>
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/loggedin" element={<UserLoggedIn />} />
+            </Routes>
+          </BrowserRouter>
+        </QueryClientProvider>
+      </AppContainer>
+    </CssBaseline>
   );
-}
-
-export default App;
+};

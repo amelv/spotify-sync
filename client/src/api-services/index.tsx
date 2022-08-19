@@ -1,14 +1,17 @@
 import { AxiosResponse } from "axios";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
+import { useStore } from "../store";
 
 import SpotifyRequestInterface from "./spotify-api-request";
 
 const spotifyAPI = new SpotifyRequestInterface();
 
+const ALBUM_LIMIT = 50;
+
 export const saveSongsFromAlbumsRequest = async (
   accessToken: string
 ): Promise<AxiosResponse<SpotifyApi.SaveTracksForUserResponse, any>[]> => {
-  const ALBUM_LIMIT = 50;
-
   try {
     const checkTotalAlbumsResponse =
       await spotifyAPI.makeRequest<SpotifyApi.UsersSavedAlbumsResponse>({
@@ -36,7 +39,7 @@ export const saveSongsFromAlbumsRequest = async (
 
     const albums = albumGroupResponses.reduce<SpotifyApi.SavedAlbumObject[]>(
       (albumList, albumGroupReponse) => {
-        const groupAlbums = albumGroupReponse.data.items.map((album) => album);
+        const groupAlbums = albumGroupReponse.data.items;
         return [...albumList, ...groupAlbums];
       },
       []

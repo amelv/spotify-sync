@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import styled from "styled-components";
 import { QueryClient, QueryClientProvider } from "react-query";
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -8,11 +7,16 @@ import { RequireAuth } from "./components/RequireAuth";
 import { Landing } from "./components/Landing";
 import { Login } from "./components/Login";
 import { UserLoggedIn } from "./components/UserLoggedIn";
+import { Container, styled } from "@mui/material";
 
 const queryClient = new QueryClient();
 
-const AppContainer = styled.div`
+const AppContainer = styled(Container)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #cdc6ff;
+  min-height: 100vh;
 `;
 
 export const App = () => {

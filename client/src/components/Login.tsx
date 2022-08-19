@@ -6,7 +6,7 @@ export const Login = () => {
       <Button
         variant="contained"
         component={Link}
-        href="http://localhost:8888/api/login"
+        href="http://localhost:8000/api/login"
       >
         Login into spotify.
       </Button>

@@ -1,10 +1,10 @@
-import express from "express";
-import fetch from "node-fetch";
+const express = require("express");
+const axios = require("axios");
 
 const router = express.Router();
 
 // this can be used as a seperate module
-const encodeFormData = (data: Record<string, any>) => {
+const encodeFormData = (data) => {
   return Object.keys(data)
     .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
     .join("&");
@@ -27,7 +27,7 @@ router.get("/login", async (req, res) => {
         client_id: process.env.CLIENT_ID,
         scope: scope,
         redirect_uri: process.env.REDIRECTURI,
-      } as Record<string, string>)
+      })
   );
 });
 
@@ -40,7 +40,8 @@ router.get("/logged", async (req, res) => {
     client_secret: process.env.CLIENT_SECRET,
   };
 
-  await fetch("https://accounts.spotify.com/api/token", {
+  await axios({
+    url: "https://accounts.spotify.com/api/token",
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -51,11 +52,11 @@ router.get("/logged", async (req, res) => {
           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
         ).toString("base64"),
     },
-    body: encodeFormData(body),
+    data: encodeFormData(body),
   })
-    .then((response) => response.json())
+    .then((response) => response.data)
     .then((data) => {
-      const query = new URLSearchParams(data as Record<string, any>);
+      const query = new URLSearchParams(data);
       res.redirect(`${process.env.CLIENT_REDIRECTURI}?${query}`);
     });
 });
@@ -69,7 +70,8 @@ router.get("/refresh_token", async (req, res) => {
     client_secret: process.env.CLIENT_SECRET,
   };
 
-  await fetch("https://accounts.spotify.com/api/token", {
+  await axios({
+    url: "https://accounts.spotify.com/api/token",
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
@@ -80,14 +82,14 @@ router.get("/refresh_token", async (req, res) => {
           process.env.CLIENT_ID + ":" + process.env.CLIENT_SECRET
         ).toString("base64"),
     },
-    body: encodeFormData(body),
+    data: encodeFormData(body),
   })
-    .then((response) => response.json())
-    .then((data: any) => {
+    .then((response) => response.data)
+    .then((data) => {
       res.send({
         access_token: data?.access_token,
       });
     });
 });
 
-export default router;
+module.exports = router;

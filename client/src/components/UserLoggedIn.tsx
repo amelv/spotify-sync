@@ -14,15 +14,20 @@ const ContentWrapper = styled.main`
 export const UserLoggedIn = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const setAccessToken = useStore((state) => state.setAccessToken);
-  console.log("login good");
+  const setTokens = useStore((state) => state.setTokens);
+  console.log(searchParams);
+  console.log(searchParams.get("access_token"))
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
-    if (accessToken) {
-      setAccessToken(accessToken);
+    const refreshToken = searchParams.get('refresh_token')
+    const expiresIn = searchParams.get('expires_in');
+    
+    if (accessToken && refreshToken && expiresIn) {
+      setTokens({access: accessToken, refresh: refreshToken, expiresIn})
+      console.log('navigating')
       navigate("/", { replace: true });
     }
-  }, [navigate, setAccessToken, searchParams]);
+  }, [navigate, setTokens, searchParams]);
 
   return (
     <ContentWrapper>

@@ -4,7 +4,7 @@ import { saveSongsFromAlbumsRequest } from "../api-services";
 import { useStore } from "../store";
 
 export const Landing = () => {
-  const accessToken = useStore((store) => store.accessToken);
+  const accessToken = useStore((store) => store.tokens.access);
 
   const handleClick = useCallback(async () => {
     await saveSongsFromAlbumsRequest(accessToken);

@@ -1,16 +1,26 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
 
+interface Tokens {
+  access: string;
+  refresh: string;
+  expiresIn: string;
+}
+
 interface AppState {
-  accessToken: string;
-  setAccessToken: (token: string) => void;
+  tokens: Tokens;
+  setTokens: (token: Tokens) => void;
 }
 
 export const useStore = create<AppState>()(
   persist(
     (set) => ({
-      accessToken: "",
-      setAccessToken: (token: string) => set({ accessToken: token }),
+      tokens: {
+        access: '',
+        refresh: '',
+        expiresIn: ''
+      },
+      setTokens: (tokens: Tokens) => set({ tokens }),
     }),
     {
       name: "spotify-album-songs-sync-store",

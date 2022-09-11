@@ -29,7 +29,8 @@
     "server": "nodemon",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "npm run build --prefix client"
+    "build": "npm run build --prefix client",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "proxy": "http://localhost:8000",
   "eslintConfig": {

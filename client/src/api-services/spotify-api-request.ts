@@ -68,7 +68,7 @@ export default class SpotifyRequestInterface {
 
     baseURL = "https://api.spotify.com/v1";
 
-    makeRequest = async <DataType = any,>({
+    makeRequest = async <DataType = any>({
         accessToken,
         urlEndpoint,
         method,

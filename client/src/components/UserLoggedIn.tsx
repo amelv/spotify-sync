@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 
 import styled from "styled-components";
-import { useStore } from "../store";
+import { useStore, useHydration } from "../store";
 
 const ContentWrapper = styled.main`
   width: 100%;
@@ -15,23 +15,23 @@ export const UserLoggedIn = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const setTokens = useStore((state) => state.setTokens);
-  console.log(searchParams);
-  console.log(searchParams.get("access_token"))
+  const isHydrated = useHydration();
+  console.log('reach logged in page')
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
     const refreshToken = searchParams.get('refresh_token')
     const expiresIn = searchParams.get('expires_in');
     
-    if (accessToken && refreshToken && expiresIn) {
-      setTokens({access: accessToken, refresh: refreshToken, expiresIn})
+    if (isHydrated && accessToken && refreshToken && expiresIn) {
+      setTokens({access: accessToken, refresh: refreshToken, expiresIn, expiresAt: new Date(Date.now() + Number(expiresIn))})
       console.log('navigating')
       navigate("/", { replace: true });
     }
-  }, [navigate, setTokens, searchParams]);
+  }, [navigate, setTokens, searchParams, isHydrated]);
 
-  return (
+  return isHydrated ? (
     <ContentWrapper>
       <h1>Log in successful</h1>
     </ContentWrapper>
-  );
+  ) : null;
 };

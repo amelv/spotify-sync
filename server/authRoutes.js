@@ -19,7 +19,7 @@ router.get("/login", async (req, res) => {
       user-top-read
       playlist-read-private
       playlist-modify-public`;
-
+  try {
   res.redirect(
     "https://accounts.spotify.com/authorize?" +
       new URLSearchParams({
@@ -29,6 +29,10 @@ router.get("/login", async (req, res) => {
         redirect_uri: process.env.REDIRECTURI,
       })
   );
+  } catch (error) {
+    console.error(error)
+    return Promise.reject(error)
+  }
 });
 
 router.get("/logged", async (req, res) => {
@@ -58,7 +62,7 @@ router.get("/logged", async (req, res) => {
     .then((data) => {
       const query = new URLSearchParams(data);
       res.redirect(`${process.env.CLIENT_REDIRECTURI}?${query}`);
-    });
+    }).catch((error) => Promise.reject(error));
 });
 
 router.get("/refresh_token", async (req, res) => {
@@ -89,7 +93,7 @@ router.get("/refresh_token", async (req, res) => {
       res.send({
         access_token: data?.access_token,
       });
-    });
+    }).catch((error) => Promise.reject(error));
 });
 
 module.exports = router;

@@ -1,20 +1,41 @@
-import { useCallback, useEffect, useState } from "react";
-import { Button, Card, Container, Typography } from "@mui/material";
-import { getSavedAlbums } from "../api-services";
-import { useStore } from "../store";
-import React from "react";
-import { useQuery, useQueryClient } from "react-query";
+import { Typography, Card, CardMedia, CardContent, CardActionArea, styled } from "@mui/material";
+import { useStore, useHydration } from "../store";
 
 interface AlbumCardProps {
-    album: SpotifyApi.SavedAlbumObject
+    album: SpotifyApi.AlbumObjectFull
 }
 
 export const AlbumCard = ({album}: AlbumCardProps) => {
-    const image = album.album.images[0];
+  const image = album.images[0];
+  const [isSelected, addAlbum, removeAlbum]  = useStore((store) => [store.selectedAlbums.get(album.id), store.selectAlbums, store.removeAlbums])
+  const isHydrated = useHydration();
+  const handleToggle = () => {
+    if (isSelected) {
+      removeAlbum(album)
+    } else {
+      addAlbum(album)
+    }
+  }
     
-  return (
-    <Card>
-        
+  return isHydrated ? (
+    <Card raised={!isSelected} sx={{ maxWidth: 345, outline: isSelected ? "5px solid blue"  : 'none', boxShadow: isSelected ? 'rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset' : undefined,  transition: 'outline 0.3s ease, box-shadow 0.3s ease'}}>
+      <CardActionArea onClick={handleToggle}>
+        <CardMedia
+        id="album-image"
+        component="img"
+        height={240}
+        image={image.url}
+        alt=""
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          {album.name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {album.artists.map((artist) => artist.name).join(', ')}
+        </Typography>
+      </CardContent>
+      </CardActionArea>
     </Card>
-  );
+  ) : null;
 };

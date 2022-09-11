@@ -4,19 +4,23 @@ import CssBaseline from "@mui/material/CssBaseline";
 
 import "./index.css";
 import { RequireAuth } from "./components/RequireAuth";
-import { Landing } from "./components/Landing";
+import { AlbumSelection } from "./components/AlbumSelection";
 import { Login } from "./components/Login";
 import { UserLoggedIn } from "./components/UserLoggedIn";
 import { Container, styled } from "@mui/material";
+import { Confirmation } from "./components/Confirmation";
+import { Landing } from "./components/Landing";
+import { SyncResults } from "./components/SyncResults";
 
 const queryClient = new QueryClient();
 
-const AppContainer = styled(Container)`
+const AppContainer = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #cdc6ff;
   min-height: 100vh;
+  max-width: 100vw;
 `;
 
 export const App = () => {
@@ -34,6 +38,24 @@ export const App = () => {
                   </RequireAuth>
                 }
               />
+              <Route
+                path="/select-albums"
+                element={
+                  <RequireAuth>
+                    <AlbumSelection />
+                  </RequireAuth>
+                }
+              />
+              <Route path="/sync" element={
+                <RequireAuth>
+                  <Confirmation />
+                </RequireAuth>
+              } />
+              <Route path="/sync-results" element={
+                <RequireAuth>
+                  <SyncResults />
+                </RequireAuth>
+              } />
               <Route path="/login" element={<Login />} />
               <Route path="/loggedin" element={<UserLoggedIn />} />
             </Routes>

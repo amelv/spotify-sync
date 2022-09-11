@@ -1,23 +1,35 @@
-import { useCallback } from "react";
-import { Button, Container, Typography } from "@mui/material";
-import { saveSongsFromAlbumsRequest } from "../api-services";
-import { useStore } from "../store";
+import { Container, Button, Typography  } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useStore, useHydration } from "../store";
 
 export const Landing = () => {
-  const accessToken = useStore((store) => store.tokens.access);
+  const navigate = useNavigate();
+  const isHydrated = useHydration()
+  const syncState = useStore((store) => store.syncState)
+  const setSyncState = useStore((store) => store.setSyncState)
+  const clearAlbums = useStore((store) => store.clearAlbums)
 
-  const handleClick = useCallback(async () => {
-    await saveSongsFromAlbumsRequest(accessToken);
-  }, [accessToken]);
-
-  return (
-    <Container>
-      <Typography variant="h1">Add Saved Albums to "Liked Songs"</Typography>
-      <Typography variant="caption">
-        This will add all songs from your current saved albums into your "Liked
-        Songs" playlist.
+  return isHydrated ? (
+    <Container sx={{maxWidth: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems:'center', gap: '30px'}}>
+      <Typography variant="h1" sx={{fontSize: '2.5rem'}}>
+        Spotify Albums to Songs Sync
       </Typography>
-      <Button onClick={handleClick}>Add Songs from Albums</Button>
+      <Button variant="contained"
+        onClick={() => {
+          clearAlbums();
+          setSyncState({...syncState, allAlbums: false, completed: false})
+          navigate('/select-albums')
+        }}>
+        Select Albums to Sync
+      </Button>
+      <Button variant="contained"
+        onClick={() => {
+          clearAlbums();
+          setSyncState({...syncState, allAlbums: true, completed: false})
+          navigate('/sync')
+        }}>
+        Sync All Albums
+      </Button>
     </Container>
-  );
+  ) : null;
 };

@@ -15,7 +15,7 @@ export const useTokenRefresh = () => {
 
         const refreshCallback = async () => {
             try {
-            const {data} = await axios({url: `http://localhost:8000/api/refresh_token?refresh_token=${refresh}`, method: 'GET'})
+            const {data} = await axios({url: `${process.env.REACT_APP_REFRESH_URI}?refresh_token=${refresh}`, method: 'GET'})
 
             console.log(data)
             if (data.access_token) {
@@ -25,7 +25,9 @@ export const useTokenRefresh = () => {
                 console.log(new Date(Date.now() + (Number(expiresIn) - 60) * 1000))
             }
             } catch (error) {
-                window.location.replace('http://localhost:8000/api/login')
+                if (process.env.REACT_APP_LOGIN_URI) {
+                    window.location.replace(process.env.REACT_APP_LOGIN_URI)
+                }
             }
         }
 

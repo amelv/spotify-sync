@@ -17,7 +17,7 @@ export const Login = () => {
         <Button
         variant="contained"
         component={Link}
-        href={process.env.REACT_APP_REDIRECTURI}
+        href={process.env.REACT_APP_LOGIN_URI}
       >
         Login into spotify.
       </Button>

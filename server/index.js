@@ -6,7 +6,7 @@ const authRoutes = require('./authRoutes');
 class Server {
   constructor() {
     this.app = express();
-    this.port = process.env.SERVER_PORT || 8000;
+    this.port = process.env.PORT || 8000;
 
     this.middlewares();
     this.routes();

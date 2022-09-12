@@ -45,12 +45,12 @@
     "zustand": "^4.0.0-rc.1"
   },
   "scripts": {
-    "predeploy": "cp ${ENV:-'../.env'} .env && npm run build",
-    "deploy": "cp ${ENV:-'../.env'} .env && gh-pages -d build",
-    "start": "cp ${ENV:-'../.env'} .env && react-scripts start",
-    "build": "cp ${ENV:-'../.env'} .env && react-scripts build",
-    "test": "cp ${ENV:-'../.env'} .env && react-scripts test",
-    "eject": "cp ${ENV:-'../.env'} .env && react-scripts eject"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
   "proxy": "http://localhost:3000",
   "eslintConfig": {

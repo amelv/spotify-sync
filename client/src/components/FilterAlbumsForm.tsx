@@ -1,4 +1,4 @@
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState, FormEvent, Dispatch, SetStateAction } from "react";
 import { Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton, Select } from "@mui/material";
 import { useStore, useHydration } from "../store";
 import Search from '@mui/icons-material/Search'
@@ -18,6 +18,7 @@ export enum SortOption {
 export interface FormState {
   searchQuery: string;
   sortOption: SortOption; 
+  albumGridSize: number;
 }
 
 interface Props {
@@ -25,17 +26,29 @@ interface Props {
     handleSelectAll: () => void;
 }
 
+
+const ALBUM_INTERVAL = 24
+
 export const FilterAlbumsForm = ({formState, handleSelectAll}: Props) => {
   const [{searchQuery, sortOption}, setFormState] = formState
   const [searchInputValue, setSearchInputValue] = useState(searchQuery)
   const isHydrated = useHydration()
   const clearAlbums = useStore((store) => store.clearAlbums)
+
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setFormState((values) => ({...values, searchQuery: searchInputValue, albumGridSize: ALBUM_INTERVAL}))
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          window.scrollTo({top: 0, behavior: 'smooth'}) 
+        }, 20)
+      })
+    })
+  }
         
   return isHydrated ? (
-      <form style={{position: 'sticky', top: 40, width: '100%', height: '100px', backgroundColor: 'white', zIndex: 3, display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems: 'center', gap: '20px', border: '2px solid black', boxShadow: '0px 7px 7px -4px rgba(0,0,0,0.2),0px 10px 13px 2px rgba(0,0,0,0.14),0px 4px 17px 3px rgba(0,0,0,0.12)', borderRadius: '4px', }} onSubmit={(e) => {
-        e.preventDefault();
-        setFormState((values) => ({...values, searchQuery: searchInputValue}))
-      }}>
+      <form style={{position: 'sticky', top: 40, width: '100%', height: '100px', backgroundColor: 'white', zIndex: 3, display: 'flex', flexDirection:'row', justifyContent: 'center', alignItems: 'center', gap: '20px', border: '2px solid black', boxShadow: '0px 7px 7px -4px rgba(0,0,0,0.2),0px 10px 13px 2px rgba(0,0,0,0.14),0px 4px 17px 3px rgba(0,0,0,0.12)', borderRadius: '4px', }} onSubmit={onSubmit}>
         <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined">
             <InputLabel htmlFor="search-input">Search</InputLabel>
             <OutlinedInput

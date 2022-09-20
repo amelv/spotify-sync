@@ -13,19 +13,17 @@ export const useTokenRefresh = () => {
             return;
         }
 
+        let refreshIsCancelled = false;
+
         const refreshCallback = async () => {
             try {
             const {data} = await axios({url: `${process.env.REACT_APP_REFRESH_URI}?refresh_token=${refresh}`, method: 'GET'})
 
-            console.log(data)
-            if (data.access_token) {
-                console.log('setting stuff')
-                console.log(expiresIn)
-                setTokens({access: data.access_token, refresh, expiresIn, expiresAt: new Date(Date.now() + (Number(expiresIn) - 60) * 1000)})
-                console.log(new Date(Date.now() + (Number(expiresIn) - 60) * 1000))
-            }
+                if (!refreshIsCancelled && data.access_token) {
+                    setTokens({access: data.access_token, refresh, expiresIn, expiresAt: new Date(Date.now() + ((Number(expiresIn) - 60) * 1000))})
+                }
             } catch (error) {
-                if (process.env.REACT_APP_LOGIN_URI) {
+                if (!refreshIsCancelled && process.env.REACT_APP_LOGIN_URI) {
                     window.location.replace(process.env.REACT_APP_LOGIN_URI)
                 }
             }
@@ -33,6 +31,9 @@ export const useTokenRefresh = () => {
 
         if (expiresAt && Date.now() >= expiresAt.getTime()) {
             refreshCallback();
+        }
+        return () => {
+            refreshIsCancelled = true
         }
     }, [refresh, expiresIn, expiresAt, setTokens, isHydrated])
 }

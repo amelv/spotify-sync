@@ -1,7 +1,4 @@
 import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
-import { useStore } from "../store";
 
 import SpotifyRequestInterface from "./spotify-api-request";
 

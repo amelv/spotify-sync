@@ -24,6 +24,8 @@ export const SyncResults = () => {
         navigate('/')
     }
 
+    let requestIsCancelled = false;
+
     const makeSyncRequest = async () => {
         if (syncState.completed) {
             return Promise.resolve()
@@ -31,19 +33,30 @@ export const SyncResults = () => {
         setStatus('loading')
         try {
             await syncSongsFromAlbumsRequest(accessToken, syncState.type ?? 'save', setProgress, syncState.allAlbums ? undefined : selectedAlbums);
-            startTransition(() => {
-              setStatus('success')
-              setProgress(1)
-              setSyncState({...syncState, completed: true})
-            })
+            if (!requestIsCancelled) {
+              startTransition(() => {
+                setStatus('success')
+                setProgress(1)
+                setSyncState({...syncState, completed: true})
+              })
+            }
           } catch (error) {
-            setStatus('error')
+            if (!requestIsCancelled) {
+              startTransition(() => {
+                setStatus('error')
+              })
+            }
           }
     }
+
     if (status === 'start') {
       startTransition(() => {
         makeSyncRequest();
       })
+    }
+    
+    return () => {
+      requestIsCancelled = true
     }
   }, [accessToken, selectedAlbums, syncState, isHydrated, status, setSyncState])
 

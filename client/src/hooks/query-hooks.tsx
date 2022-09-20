@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState, } from "react";
 import { getSavedAlbums } from "../api-services";
 import { useHydration, useStore } from "../store";
 import { useQuery } from "react-query";
@@ -16,6 +16,7 @@ const filterAlbum = (searchQuery: string, savedAlbum: SpotifyApi.SavedAlbumObjec
   return normalizedQuery.some((q) => [...normalizedArtists, ...normalizedAlbumName].some((str) => str.includes(q)))
 }
 
+const ALBUM_INTERVAL = 24
 
 const sortAlbums = (sortOption: SortOption, savedAlbumA: SpotifyApi.SavedAlbumObject, savedAlbumB: SpotifyApi.SavedAlbumObject) => {
   switch (sortOption) {
@@ -42,31 +43,40 @@ const sortAlbums = (sortOption: SortOption, savedAlbumA: SpotifyApi.SavedAlbumOb
   }
 }
 
+
 export const useSavedAlbumsQuery = (formValues: FormState) => {
   const isHydrated = useHydration()
   const accessToken = useStore((store) => store.tokens.access);
-
   const {searchQuery, sortOption} = formValues
 
   useTokenRefresh();
 
-  return useQuery<SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined>(['saved-albums'], 
+  const selectAlbumsFromQuery = useCallback((data: SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined): SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined => {
+    if (!data) {
+      return undefined
+    }
+
+    const albums = data.items.filter((savedAlbum) => 
+    filterAlbum(searchQuery, savedAlbum)).sort((a,b) => 
+    sortAlbums(sortOption, a, b))
+
+    return {...data, items: albums}
+  }, [searchQuery, sortOption])
+
+  return useQuery<SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined>(['saved-albums', isHydrated, accessToken], 
       async () => {
         if (!isHydrated) {
           return undefined;
         }
-        return await getSavedAlbums(accessToken)
-            .then(response => response.data)
-            .catch((error: AxiosError<SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject>>) => {
-               return Promise.reject(error);
-            })
+        try {
+          const response = await getSavedAlbums(accessToken)
+          return response.data
+        } catch (error) {
+          return Promise.reject(error);
+        }
         }, 
         {
-          select: (data) => data ? ({...data, items: data.items.filter((savedAlbum) => 
-            filterAlbum(searchQuery, savedAlbum)).sort((a,b) => 
-            sortAlbums(sortOption, a, b))}) : undefined,
+          select: selectAlbumsFromQuery,
         keepPreviousData: false,
         refetchOnWindowFocus: false})
-
-
 };

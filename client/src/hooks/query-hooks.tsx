@@ -78,5 +78,6 @@ export const useSavedAlbumsQuery = (formValues: FormState) => {
         {
           select: selectAlbumsFromQuery,
         keepPreviousData: false,
-        refetchOnWindowFocus: false})
+        refetchOnWindowFocus: false,
+        refetchOnMount: false})
 };

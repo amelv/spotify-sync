@@ -1,5 +1,6 @@
 import { Typography, Card, CardMedia, CardContent, CardActionArea, styled } from "@mui/material";
 import { useStore, useHydration } from "../store";
+import shallow from 'zustand/shallow'
 
 interface AlbumCardProps {
     album: SpotifyApi.AlbumObjectFull
@@ -7,7 +8,8 @@ interface AlbumCardProps {
 
 export const AlbumCard = ({album}: AlbumCardProps) => {
   const image = album.images[0];
-  const [isSelected, addAlbum, removeAlbum]  = useStore((store) => [store.selectedAlbums.get(album.id), store.selectAlbums, store.removeAlbums])
+  console.log('card render')
+  const [isSelected, addAlbum, removeAlbum]  = useStore((store) => [store.selectedAlbums.get(album.id), store.selectAlbums, store.removeAlbums], shallow)
   const isHydrated = useHydration();
   const handleToggle = () => {
     if (isSelected) {

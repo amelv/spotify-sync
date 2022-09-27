@@ -1,5 +1,4 @@
-# React App that will sync your Spotify Account's Songs and Albums
-
+A React app that will sync your Spotify Account's Songs and Albums. 
 
 ## Available Scripts
 

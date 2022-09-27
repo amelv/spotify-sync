@@ -25,10 +25,8 @@ const sortAlbums = (sortOption: SortOption, savedAlbumA: SpotifyApi.SavedAlbumOb
     case SortOption.DESCENDING_ADD_DATE:
       return new Date(savedAlbumB.added_at).getTime() - new Date(savedAlbumA.added_at).getTime()
     case SortOption.ASCENDING_RELEASE_DATE:
-      console.log(new Date(savedAlbumA.album.release_date).getTime() - new Date(savedAlbumB.added_at).getTime())
       return new Date(savedAlbumA.album.release_date).getTime() - new Date(savedAlbumB.added_at).getTime()
     case SortOption.DESCENDING_RELEASE_DATE:
-      console.log(savedAlbumA.album.release_date)
       return new Date(savedAlbumB.album.release_date).getTime() - new Date(savedAlbumA.added_at).getTime()
     case SortOption.ASCENDING_ALBUM:
       return savedAlbumA.album.name.localeCompare(savedAlbumB.album.name)

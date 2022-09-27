@@ -66,7 +66,6 @@ export const syncSongsFromAlbumsRequest = async (
               album.tracks.items.slice(0, 50).map((track) => track.id)
             ),
           }).then((data) => {
-            console.log(index / array.length)
             onProgress(index / array.length)
             return data
           })

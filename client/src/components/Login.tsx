@@ -3,7 +3,6 @@ import process from "process";
 import spotifyIcon from '../assets/spotify.png'
 
 export const Login = () => {
-  console.log(process.env)
   return (
     <Container sx={{maxWidth: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-evenly', alignItems:'center', gap: '30px'}}>
       <Typography variant="h1" sx={{fontSize: '2.5rem'}}>

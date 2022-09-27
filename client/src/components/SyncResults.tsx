@@ -13,7 +13,6 @@ export const SyncResults = () => {
   const navigate = useNavigate();
   const [status, setStatus] = useState('start')
   const [progress, setProgress] = useState(0)
-  console.log(progress)
 
   useEffect(() => {
     if (!isHydrated || status !== 'start') {

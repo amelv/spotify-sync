@@ -8,7 +8,7 @@ interface AlbumCardProps {
 
 export const AlbumCard = ({album}: AlbumCardProps) => {
   const image = album.images[0];
-  console.log('card render')
+
   const [isSelected, addAlbum, removeAlbum]  = useStore((store) => [store.selectedAlbums.get(album.id), store.selectAlbums, store.removeAlbums], shallow)
   const isHydrated = useHydration();
   const handleToggle = () => {

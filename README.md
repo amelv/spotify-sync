@@ -1,4 +1,4 @@
-A React app that will sync your Spotify Account's Songs and Albums. Sync your Spotify "Saved Albums" and "Liked Songs". Sync all albums or just a few. 
+A React app that will sync your Spotify Account's Songs and Albums. Sync all albums or just a few. 
 
 ## Available Scripts
 

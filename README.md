@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A React app that will sync your Spotify Account's Songs and Albums. Sync all albums or just a few. 
 
 ## Available Scripts
 

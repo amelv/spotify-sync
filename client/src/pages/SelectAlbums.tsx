@@ -1,4 +1,5 @@
-import { Container, Typography } from "@mui/material";
+import { Container, Fab, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { AlbumSelector } from "src/components/AlbumSelector";
 
 export const SelectAlbums = () => {
@@ -19,6 +20,38 @@ export const SelectAlbums = () => {
         Songs" playlist.
       </Typography>
       <AlbumSelector />
+      <Fab
+        color="secondary"
+        size="large"
+        sx={{
+          position: "sticky",
+          bottom: "48px",
+          marginRight: "80%",
+          height: "64px",
+          fontSize: "1rem",
+        }}
+        component={Link}
+        to="/"
+        variant="extended"
+      >
+        Go Back
+      </Fab>
+      <Fab
+        color="primary"
+        size="large"
+        sx={{
+          position: "sticky",
+          bottom: "48px",
+          marginLeft: "80%",
+          height: "64px",
+          fontSize: "1rem",
+        }}
+        component={Link}
+        to="/sync"
+        variant="extended"
+      >
+        Continue
+      </Fab>
     </Container>
   );
 };

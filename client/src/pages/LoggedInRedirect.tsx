@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
+import { useHydration, useStore } from "src/store";
 import styled from "styled-components";
-import { useStore, useHydration } from "../store";
 
 const ContentWrapper = styled.main`
   width: 100%;
@@ -11,27 +11,32 @@ const ContentWrapper = styled.main`
   flex-direction: column;
 `;
 
-export const UserLoggedIn = () => {
+export const LoggedInRedirect = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const setTokens = useStore((state) => state.setTokens);
   const isHydrated = useHydration();
-  console.log('reach logged in page')
+
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
-    const refreshToken = searchParams.get('refresh_token')
-    const expiresIn = searchParams.get('expires_in');
-    
+    const refreshToken = searchParams.get("refresh_token");
+    const expiresIn = searchParams.get("expires_in");
+
     if (isHydrated && accessToken && refreshToken && expiresIn) {
-      setTokens({access: accessToken, refresh: refreshToken, expiresIn, expiresAt: new Date(Date.now() + Number(expiresIn))})
-      console.log('navigating')
+      setTokens({
+        access: accessToken,
+        refresh: refreshToken,
+        expiresIn,
+        expiresAt: new Date(Date.now() + Number(expiresIn)),
+      });
+
       navigate("/", { replace: true });
     }
   }, [navigate, setTokens, searchParams, isHydrated]);
 
-  return isHydrated ? (
+  return (
     <ContentWrapper>
       <h1>Log in successful</h1>
     </ContentWrapper>
-  ) : null;
+  );
 };

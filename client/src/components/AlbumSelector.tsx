@@ -1,6 +1,5 @@
-import { Button, Fab, LinearProgress } from "@mui/material";
+import { Button, LinearProgress } from "@mui/material";
 import { useCallback, useMemo } from "react";
-import { Link } from "react-router-dom";
 import { AlbumGrid } from "src/components/AlbumGrid";
 import { FilterAlbumsForm } from "src/components/FilterAlbumsForm";
 import { useSavedAlbumsQuery } from "src/hooks/queryHooks";
@@ -54,38 +53,6 @@ export const AlbumSelector = () => {
           Show More
         </Button>
       )}
-      <Fab
-        color="secondary"
-        size="large"
-        sx={{
-          position: "sticky",
-          bottom: "48px",
-          marginRight: "80%",
-          height: "64px",
-          fontSize: "1rem",
-        }}
-        component={Link}
-        to="/"
-        variant="extended"
-      >
-        Go Back
-      </Fab>
-      <Fab
-        color="primary"
-        size="large"
-        sx={{
-          position: "sticky",
-          bottom: "48px",
-          marginLeft: "80%",
-          height: "64px",
-          fontSize: "1rem",
-        }}
-        component={Link}
-        to="/sync"
-        variant="extended"
-      >
-        Continue
-      </Fab>
     </>
   ) : null;
 };

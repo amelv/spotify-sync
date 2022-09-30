@@ -1,20 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { QueryClient, QueryClientProvider } from "react-query";
 import CssBaseline from "@mui/material/CssBaseline";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import "./index.css";
+import { styled } from "@mui/material";
+import { Confirmation } from "src/pages/ConfirmSync";
+import { Landing } from "src/pages/Landing";
+import { Login } from "src/pages/Login";
+import { SyncResults } from "src/pages/SyncResults";
 import { RequireAuth } from "./components/RequireAuth";
-import { AlbumSelection } from "./components/AlbumSelection";
-import { Login } from "./components/Login";
-import { UserLoggedIn } from "./components/UserLoggedIn";
-import { Container, styled } from "@mui/material";
-import { Confirmation } from "./components/Confirmation";
-import { Landing } from "./components/Landing";
-import { SyncResults } from "./components/SyncResults";
+import { LoggedInRedirect } from "./pages/LoggedInRedirect";
+import { SelectAlbums } from "./pages/SelectAlbums";
 
 const queryClient = new QueryClient();
 
-const AppContainer = styled('div')`
+const AppContainer = styled("div")`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,22 +41,28 @@ export const App = () => {
                 path="/select-albums"
                 element={
                   <RequireAuth>
-                    <AlbumSelection />
+                    <SelectAlbums />
                   </RequireAuth>
                 }
               />
-              <Route path="/sync" element={
-                <RequireAuth>
-                  <Confirmation />
-                </RequireAuth>
-              } />
-              <Route path="/sync-results" element={
-                <RequireAuth>
-                  <SyncResults />
-                </RequireAuth>
-              } />
+              <Route
+                path="/sync"
+                element={
+                  <RequireAuth>
+                    <Confirmation />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="/sync-results"
+                element={
+                  <RequireAuth>
+                    <SyncResults />
+                  </RequireAuth>
+                }
+              />
               <Route path="/login" element={<Login />} />
-              <Route path="/loggedin" element={<UserLoggedIn />} />
+              <Route path="/loggedin" element={<LoggedInRedirect />} />
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>

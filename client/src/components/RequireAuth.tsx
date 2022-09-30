@@ -1,12 +1,12 @@
 import { ReactElement, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useTokenRefresh } from "../hooks";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useTokenRefresh } from "src/hooks";
 
-import { useStore, useHydration } from "../store";
+import { useHydration, useStore } from "src/store";
 
 export const RequireAuth = ({ children }: { children: ReactElement }) => {
-  const {access} = useStore((state) => state.tokens);
-  const isHydrated = useHydration()
+  const { access } = useStore((state) => state.tokens);
+  const isHydrated = useHydration();
   const location = useLocation();
   const navigate = useNavigate();
 

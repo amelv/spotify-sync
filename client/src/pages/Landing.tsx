@@ -1,6 +1,6 @@
 import { Container, Button, Typography  } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useStore, useHydration } from "../store";
+import { useStore, useHydration } from "src/store";
 
 export const Landing = () => {
   const navigate = useNavigate();

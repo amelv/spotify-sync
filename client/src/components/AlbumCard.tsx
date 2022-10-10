@@ -37,16 +37,51 @@ export const AlbumCard = memo(
     return (
       <Card
         raised={!isSelected}
-        sx={{
+        sx={(theme) => ({
           maxWidth: 345,
-          outline: isSelected ? "5px solid blue" : "none",
+
+          height: 372,
+          outline: isSelected
+            ? `5px solid ${theme.palette.secondary.main}`
+            : "none",
           boxShadow: isSelected
             ? "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
             : undefined,
           transition: "outline 0.3s ease, box-shadow 0.3s ease",
-        }}
+        })}
       >
-        <CardActionArea disabled={!isHydrated} onClick={handleToggle}>
+        <CardActionArea
+          sx={(theme) => ({
+            ["& span.MuiCardActionArea-focusHighlight"]: {
+              opacity: isSelected
+                ? theme.palette.action.selectedOpacity
+                : undefined,
+              backgroundColor: isSelected
+                ? theme.palette.primary.main
+                : undefined,
+            },
+            ["&:hover span.MuiCardActionArea-focusHighlight"]: {
+              opacity: isSelected
+                ? theme.palette.action.selectedOpacity * 1.5
+                : undefined,
+              backgroundColor: isSelected
+                ? theme.palette.primary.main
+                : undefined,
+            },
+            ["&.Mui-focusVisible span.MuiCardActionArea-focusHighlight"]: {
+              opacity: isSelected
+                ? theme.palette.action.selectedOpacity * 1.5
+                : undefined,
+              backgroundColor: isSelected
+                ? theme.palette.primary.main
+                : undefined,
+            },
+
+            height: 372,
+          })}
+          disabled={!isHydrated}
+          onClick={handleToggle}
+        >
           <CardMedia
             id="album-image"
             component="img"
@@ -54,7 +89,7 @@ export const AlbumCard = memo(
             image={image.url}
             alt=""
           />
-          <CardContent>
+          <CardContent sx={{ height: "100%" }}>
             <Typography gutterBottom variant="h5" component="div">
               {album.name}
             </Typography>

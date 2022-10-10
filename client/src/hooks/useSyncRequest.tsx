@@ -68,6 +68,7 @@ export const useSyncRequest = () => {
     isHydrated,
     status,
     setSyncState,
+    navigate,
   ]);
   return { status, progress };
 };

@@ -1,3 +1,4 @@
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import {
   Card,
   CardActionArea,
@@ -48,6 +49,7 @@ export const AlbumCard = memo(
             ? "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
             : undefined,
           transition: "outline 0.3s ease, box-shadow 0.3s ease",
+          positon: "relative",
         })}
       >
         <CardActionArea
@@ -76,12 +78,28 @@ export const AlbumCard = memo(
                 ? theme.palette.primary.main
                 : undefined,
             },
-
             height: 372,
+            position: "relative",
           })}
           disabled={!isHydrated}
           onClick={handleToggle}
         >
+          {isSelected && (
+            <CheckCircleIcon
+              sx={(theme) => ({
+                position: "absolute",
+                width: 120,
+                height: 120,
+                zIndex: 2,
+                color: theme.palette.secondary.main,
+                margin: "auto",
+                left: 0,
+                right: 0,
+                bottom: 120,
+                top: 0,
+              })}
+            />
+          )}
           <CardMedia
             id="album-image"
             component="img"

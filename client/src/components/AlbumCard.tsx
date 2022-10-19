@@ -4,6 +4,7 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Fade,
   Typography,
 } from "@mui/material";
 import { memo } from "react";
@@ -20,7 +21,7 @@ export const AlbumCard = memo(
 
     const [isSelected, addAlbum, removeAlbum] = useStore(
       (store) => [
-        store.selectedAlbums.get(album.id),
+        !!store.selectedAlbums.get(album.id),
         store.selectAlbums,
         store.removeAlbums,
       ],
@@ -84,7 +85,13 @@ export const AlbumCard = memo(
           disabled={!isHydrated}
           onClick={handleToggle}
         >
-          {isSelected && (
+          <Fade
+            appear
+            mountOnEnter
+            unmountOnExit
+            in={isSelected}
+            timeout={{ enter: 300, exit: 100 }}
+          >
             <CheckCircleIcon
               sx={(theme) => ({
                 position: "absolute",
@@ -99,7 +106,7 @@ export const AlbumCard = memo(
                 top: 0,
               })}
             />
-          )}
+          </Fade>
           <CardMedia
             id="album-image"
             component="img"

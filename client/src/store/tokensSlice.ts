@@ -7,9 +7,14 @@ interface Tokens {
   expiresAt?: Date;
 }
 
+interface Action {
+  type: "set";
+  payload: Tokens;
+}
+
 export interface TokensSlice {
   tokens: Tokens;
-  setTokens: (token: Tokens) => void;
+  dispatchTokensAction: (token: Action) => void;
 }
 
 export const createTokensSlice: SliceCreator<TokensSlice> = (set) => ({
@@ -18,5 +23,5 @@ export const createTokensSlice: SliceCreator<TokensSlice> = (set) => ({
     refresh: "",
     expiresIn: "",
   },
-  setTokens: (tokens: Tokens) => set({ tokens }),
+  dispatchTokensAction: ({ type, payload }) => set({ tokens: payload }),
 });

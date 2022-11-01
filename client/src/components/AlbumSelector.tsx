@@ -10,7 +10,9 @@ const ALBUM_INTERVAL = 24;
 
 export const AlbumSelector = () => {
   const isHydrated = useHydration();
-  const selectAllAlbums = useStore((store) => store.selectAllAlbums);
+  const dispatchAlbumSelectionAction = useStore(
+    (store) => store.dispatchAlbumSelectionAction
+  );
   const [state, dispatch] = useSelectorState();
 
   const { searchQuery, albumGridSize } = state;
@@ -32,7 +34,10 @@ export const AlbumSelector = () => {
 
   const handleSelectAll = useCallback(() => {
     if (isHydrated) {
-      selectAllAlbums(currentAlbums.map(({ album }) => album));
+      dispatchAlbumSelectionAction({
+        type: "select-all",
+        payload: currentAlbums.map(({ album }) => album),
+      });
     }
   }, [currentAlbums, isHydrated]);
 

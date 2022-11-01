@@ -1,8 +1,9 @@
 import { Container, Fab, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { AlbumSelector } from "src/components/AlbumSelector";
+import { withAuth } from "src/components/WithAuth";
 
-export const SelectAlbums = () => {
+export const SelectAlbums = withAuth(() => {
   return (
     <Container
       sx={{
@@ -54,4 +55,4 @@ export const SelectAlbums = () => {
       </Fab>
     </Container>
   );
-};
+});

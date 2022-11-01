@@ -19,21 +19,19 @@ export const AlbumCard = memo(
   ({ album }: AlbumCardProps) => {
     const image = album.images[0];
 
-    const [isSelected, addAlbum, removeAlbum] = useStore(
+    const [isSelected, dispatchAlbumSelectionAction] = useStore(
       (store) => [
         !!store.selectedAlbums.get(album.id),
-        store.selectAlbums,
-        store.removeAlbums,
+        store.dispatchAlbumSelectionAction,
       ],
       shallow
     );
     const isHydrated = useHydration();
     const handleToggle = () => {
-      if (isSelected) {
-        removeAlbum(album);
-      } else {
-        addAlbum(album);
-      }
+      dispatchAlbumSelectionAction({
+        type: isSelected ? "remove" : "select",
+        payload: album,
+      });
     };
 
     return (

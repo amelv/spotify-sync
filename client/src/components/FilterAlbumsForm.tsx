@@ -28,7 +28,9 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
   const [{ searchQuery, sortOption }, dispatch] = selectorState;
   const [searchInputValue, setSearchInputValue] = useState(searchQuery);
   const isHydrated = useHydration();
-  const clearAlbums = useStore((store) => store.clearAlbums);
+  const dispatchAlbumSelectionAction = useStore(
+    (store) => store.dispatchAlbumSelectionAction
+  );
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -102,7 +104,9 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
         disabled={!isHydrated}
         variant="outlined"
         color="secondary"
-        onClick={clearAlbums}
+        onClick={() =>
+          dispatchAlbumSelectionAction({ type: "clear", payload: null })
+        }
       >
         Clear
       </Button>

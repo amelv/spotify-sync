@@ -13,7 +13,6 @@ import { Confirmation } from "src/pages/ConfirmSync";
 import { Landing } from "src/pages/Landing";
 import { Login } from "src/pages/Login";
 import { SyncResults } from "src/pages/SyncResults";
-import { RequireAuth } from "./components/RequireAuth";
 import { LoggedInRedirect } from "./pages/LoggedInRedirect";
 import { SelectAlbums } from "./pages/SelectAlbums";
 
@@ -47,7 +46,8 @@ const theme = responsiveFontSizes(
     },
     typography: {
       h1: {
-        fontSize: "3.5rem",
+        fontSize: "4rem",
+        fontWeight: 500,
       },
       h2: {
         fontSize: "2.75rem",
@@ -80,38 +80,10 @@ export const App = () => {
           <QueryClientProvider client={queryClient}>
             <BrowserRouter>
               <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <RequireAuth>
-                      <Landing />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/select-albums"
-                  element={
-                    <RequireAuth>
-                      <SelectAlbums />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/sync"
-                  element={
-                    <RequireAuth>
-                      <Confirmation />
-                    </RequireAuth>
-                  }
-                />
-                <Route
-                  path="/sync-results"
-                  element={
-                    <RequireAuth>
-                      <SyncResults />
-                    </RequireAuth>
-                  }
-                />
+                <Route path="/" element={<Landing />} />
+                <Route path="/select-albums" element={<SelectAlbums />} />
+                <Route path="/sync" element={<Confirmation />} />
+                <Route path="/sync-results" element={<SyncResults />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/loggedin" element={<LoggedInRedirect />} />
               </Routes>

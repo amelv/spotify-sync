@@ -1,10 +1,20 @@
-import { ReactElement, useEffect } from "react";
+import { CircularProgress, Fade } from "@mui/material";
+import { Container } from "@mui/system";
+import { FunctionComponent, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTokenRefresh } from "src/hooks";
 
 import { useHydration, useStore } from "src/store";
 
-export const RequireAuth = ({ children }: { children: ReactElement }) => {
+const LoadingAccess = () => (
+  <Container sx={{ display: "flex", justifyContent: "center" }}>
+    <Fade in={true} timeout={300}>
+      <CircularProgress size={100} color="primary" />
+    </Fade>
+  </Container>
+);
+
+export const withAuth = (Component: FunctionComponent) => (props: any) => {
   const { access } = useStore((state) => state.tokens);
   const isHydrated = useHydration();
   const location = useLocation();
@@ -18,5 +28,5 @@ export const RequireAuth = ({ children }: { children: ReactElement }) => {
 
   useTokenRefresh();
 
-  return children;
+  return isHydrated ? <Component {...props} /> : <LoadingAccess />;
 };

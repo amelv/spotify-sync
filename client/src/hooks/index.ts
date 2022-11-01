@@ -5,7 +5,7 @@ import { useHydration, useStore } from "src/store";
 export const useTokenRefresh = () => {
   const isHydrated = useHydration();
   const { refresh, expiresIn, expiresAt } = useStore((store) => store.tokens);
-  const setTokens = useStore((store) => store.setTokens);
+  const dispatchTokensAction = useStore((store) => store.dispatchTokensAction);
 
   useEffect(() => {
     if (!isHydrated || !refresh || !expiresAt) {
@@ -22,11 +22,14 @@ export const useTokenRefresh = () => {
         });
 
         if (!refreshIsCancelled && data.access_token) {
-          setTokens({
-            access: data.access_token,
-            refresh,
-            expiresIn,
-            expiresAt: new Date(Date.now() + (Number(expiresIn) - 60) * 1000),
+          dispatchTokensAction({
+            type: "set",
+            payload: {
+              access: data.access_token,
+              refresh,
+              expiresIn,
+              expiresAt: new Date(Date.now() + (Number(expiresIn) - 60) * 1000),
+            },
           });
         }
       } catch (error) {
@@ -42,5 +45,5 @@ export const useTokenRefresh = () => {
     return () => {
       refreshIsCancelled = true;
     };
-  }, [refresh, expiresIn, expiresAt, setTokens, isHydrated]);
+  }, [refresh, expiresIn, expiresAt, dispatchTokensAction, isHydrated]);
 };

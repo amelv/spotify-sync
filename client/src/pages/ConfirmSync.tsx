@@ -3,9 +3,10 @@ import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConfirmationDialog } from "src/components/ConfirmationDialog";
 import { SelectedAlbumsList } from "src/components/SelectedAlbumsList";
+import { withAuth } from "src/components/WithAuth";
 import { useHydration, useStore } from "src/store";
 
-export const Confirmation = () => {
+export const Confirmation = withAuth(() => {
   const isHydrated = useHydration();
   const syncState = useStore((store) => store.syncState);
   const setSyncState = useStore((store) => store.setSyncState);
@@ -89,4 +90,4 @@ export const Confirmation = () => {
       />
     </Container>
   ) : null;
-};
+});

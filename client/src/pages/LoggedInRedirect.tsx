@@ -14,7 +14,7 @@ const ContentWrapper = styled.main`
 export const LoggedInRedirect = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const setTokens = useStore((state) => state.setTokens);
+  const dispatchTokensAction = useStore((state) => state.dispatchTokensAction);
   const isHydrated = useHydration();
 
   useEffect(() => {
@@ -23,16 +23,19 @@ export const LoggedInRedirect = () => {
     const expiresIn = searchParams.get("expires_in");
 
     if (isHydrated && accessToken && refreshToken && expiresIn) {
-      setTokens({
-        access: accessToken,
-        refresh: refreshToken,
-        expiresIn,
-        expiresAt: new Date(Date.now() + Number(expiresIn)),
+      dispatchTokensAction({
+        type: "set",
+        payload: {
+          access: accessToken,
+          refresh: refreshToken,
+          expiresIn,
+          expiresAt: new Date(Date.now() + Number(expiresIn)),
+        },
       });
 
       navigate("/", { replace: true });
     }
-  }, [navigate, setTokens, searchParams, isHydrated]);
+  }, [navigate, dispatchTokensAction, searchParams, isHydrated]);
 
   return (
     <ContentWrapper>

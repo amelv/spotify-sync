@@ -1,8 +1,9 @@
 import { Button, Container, LinearProgress, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { withAuth } from "src/components/WithAuth";
 import { useSyncRequest } from "src/hooks/useSyncRequest";
 
-export const SyncResults = () => {
+export const SyncResults = withAuth(() => {
   const navigate = useNavigate();
   const { status, progress } = useSyncRequest();
 
@@ -34,4 +35,4 @@ export const SyncResults = () => {
       )}
     </Container>
   );
-};
+});

@@ -1,12 +1,14 @@
 import { enableMapSet } from "immer";
 import { SliceCreator } from "src/store";
 
+interface Action {
+  type: "select" | "select-all" | "remove" | "clear";
+  payload: any;
+}
+
 export interface AlbumSelectionSlice {
   selectedAlbums: Map<string, SpotifyApi.AlbumObjectFull>;
-  selectAlbums: (...albums: SpotifyApi.AlbumObjectFull[]) => void;
-  selectAllAlbums: (albums: SpotifyApi.AlbumObjectFull[]) => void;
-  removeAlbums: (...albums: SpotifyApi.AlbumObjectFull[]) => void;
-  clearAlbums: () => void;
+  dispatchAlbumSelectionAction: (action: Action) => void;
 }
 
 enableMapSet();
@@ -15,24 +17,29 @@ export const createAlbumSelectionSlice: SliceCreator<AlbumSelectionSlice> = (
   set
 ) => ({
   selectedAlbums: new Map<string, SpotifyApi.AlbumObjectFull>(),
-  selectAlbums: (...albums: SpotifyApi.AlbumObjectFull[]) =>
+  dispatchAlbumSelectionAction: ({ type, payload }: Action) => {
     set((state) => {
-      albums.forEach((album) => {
-        state.selectedAlbums.set(album.id, album);
-      });
-    }),
-  selectAllAlbums: (albums: SpotifyApi.AlbumObjectFull[]) =>
-    set((state) => {
-      state.selectedAlbums = new Map(albums.map((album) => [album.id, album]));
-    }),
-  removeAlbums: (...albums: SpotifyApi.AlbumObjectFull[]) =>
-    set((state) => {
-      albums.forEach((album) => {
-        state.selectedAlbums.delete(album.id);
-      });
-    }),
-  clearAlbums: () =>
-    set((state) => {
-      state.selectedAlbums.clear();
-    }),
+      switch (type) {
+        case "select":
+          state.selectedAlbums.set(payload.id, payload);
+          return;
+        case "select-all":
+          state.selectedAlbums = new Map(
+            payload.map((album: SpotifyApi.AlbumObjectFull) => [
+              album.id,
+              album,
+            ])
+          );
+          return;
+        case "remove":
+          state.selectedAlbums.delete(payload.id);
+          return;
+        case "clear":
+          state.selectedAlbums.clear();
+          return;
+        default:
+          return;
+      }
+    });
+  },
 });

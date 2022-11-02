@@ -1,6 +1,6 @@
 import { Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import logo from "src/assets/logo.svg";
+import { ReactComponent as Logo } from "src/assets/logo.svg";
 import { withAuth } from "src/components/WithAuth";
 import { useHydration, useStore } from "src/store";
 
@@ -16,6 +16,8 @@ export const Landing = withAuth(() => {
   return isHydrated ? (
     <Container
       sx={{
+        height: "100%",
+        minHeight: "600px",
         maxWidth: "100vw",
         display: "flex",
         flexDirection: "column",
@@ -24,7 +26,7 @@ export const Landing = withAuth(() => {
         gap: "30px",
       }}
     >
-      <img src={logo} />
+      <Logo />
       <Typography align="center" variant="h1">
         Spotify Albums to Songs Sync
       </Typography>
@@ -35,34 +37,46 @@ export const Landing = withAuth(() => {
         Sync your Spotify "Saved Albums" and "Liked Songs". Sync all albums or
         just a few.
       </Typography>
-      <Button
-        variant="contained"
+      <Container
         sx={{
-          width: "100%",
-          maxWidth: 320,
-        }}
-        onClick={() => {
-          dispatchAlbumSelectionAction({ type: "clear", payload: null });
-          setSyncState({ ...syncState, allAlbums: false, completed: false });
-          navigate("/select-albums");
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "1rem",
         }}
       >
-        Select Albums to Sync
-      </Button>
-      <Button
-        variant="contained"
-        sx={{
-          width: "100%",
-          maxWidth: 320,
-        }}
-        onClick={() => {
-          dispatchAlbumSelectionAction({ type: "clear", payload: null });
-          setSyncState({ ...syncState, allAlbums: true, completed: false });
-          navigate("/sync");
-        }}
-      >
-        Sync All Albums
-      </Button>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            width: "100%",
+            maxWidth: 320,
+          }}
+          onClick={() => {
+            dispatchAlbumSelectionAction({ type: "clear", payload: null });
+            setSyncState({ ...syncState, allAlbums: false, completed: false });
+            navigate("/select-albums");
+          }}
+        >
+          Select Albums to Sync
+        </Button>
+        <Button
+          variant="contained"
+          size="large"
+          sx={{
+            width: "100%",
+            maxWidth: 320,
+          }}
+          onClick={() => {
+            dispatchAlbumSelectionAction({ type: "clear", payload: null });
+            setSyncState({ ...syncState, allAlbums: true, completed: false });
+            navigate("/sync");
+          }}
+        >
+          Sync All Albums
+        </Button>
+      </Container>
     </Container>
   ) : null;
 });

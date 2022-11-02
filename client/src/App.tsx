@@ -13,6 +13,7 @@ import { Confirmation } from "src/pages/ConfirmSync";
 import { Landing } from "src/pages/Landing";
 import { Login } from "src/pages/Login";
 import { SyncResults } from "src/pages/SyncResults";
+import { Footer } from "./components/Footer";
 import { LoggedInRedirect } from "./pages/LoggedInRedirect";
 import { SelectAlbums } from "./pages/SelectAlbums";
 
@@ -22,9 +23,14 @@ const AppContainer = styled("div")`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   background-color: #f0eeeb;
+  padding: 4rem 1rem 0 1rem;
   min-height: 100vh;
   max-width: 100vw;
+  @media (max-width: ${(props) => props.theme.breakpoints.values.sm}px) {
+    padding: 2rem 0.5rem 0 0.5rem;
+  }
 `;
 
 const theme = responsiveFontSizes(
@@ -88,6 +94,7 @@ export const App = () => {
                 <Route path="/loggedin" element={<LoggedInRedirect />} />
               </Routes>
             </BrowserRouter>
+            <Footer />
           </QueryClientProvider>
         </AppContainer>
       </ThemeProvider>

@@ -35,8 +35,10 @@ export const Confirmation = withAuth(() => {
         padding: "20px",
       }}
     >
-      <Typography variant="h1">Add Saved Albums to "Liked Songs"</Typography>
-      <Typography variant="body1">
+      <Typography align="center" variant="h1">
+        Add Saved Albums to "Liked Songs"
+      </Typography>
+      <Typography align="center" variant="body1">
         This will add all songs from your selected saved albums into your "Liked
         Songs" playlist.
       </Typography>

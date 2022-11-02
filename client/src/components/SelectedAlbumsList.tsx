@@ -6,6 +6,7 @@ import {
   ListItemButton,
   ListItemText,
   ListSubheader,
+  Paper,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -23,20 +24,21 @@ export const SelectedAlbumsList = () => {
     setOpenItems((items) => ({ ...items, [id]: !items[id] }));
 
   return (
-    <List
+    <Paper
+      elevation={1}
+      component={List}
       sx={{
         width: "100%",
         maxWidth: 600,
-        height: 300,
+        height: "100%",
+        maxHeight: "50vh",
         overflow: "scroll",
-        border: "3px solid black",
         bgcolor: "background.paper",
       }}
-      component="nav"
       aria-labelledby="nested-list-subheader"
       subheader={
         <ListSubheader
-          sx={{ padding: "1rem" }}
+          sx={{ padding: "1rem", borderBottom: "1px solid black" }}
           component="div"
           id="nested-list-subheader"
         >
@@ -76,6 +78,6 @@ export const SelectedAlbumsList = () => {
             </Collapse>
           </div>
         ))}
-    </List>
+    </Paper>
   );
 };

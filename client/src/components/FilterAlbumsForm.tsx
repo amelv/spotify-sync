@@ -1,6 +1,11 @@
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Search from "@mui/icons-material/Search";
 import {
+  Box,
   Button,
+  Collapse,
+  Container,
   FormControl,
   IconButton,
   InputAdornment,
@@ -8,6 +13,8 @@ import {
   MenuItem,
   OutlinedInput,
   Select,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import { Dispatch, FormEvent, useState } from "react";
 import {
@@ -25,8 +32,12 @@ interface Props {
 const ALBUM_INTERVAL = 24;
 
 export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [{ searchQuery, sortOption }, dispatch] = selectorState;
   const [searchInputValue, setSearchInputValue] = useState(searchQuery);
+  const [hideFormInputs, setHideFormInputs] = useState(isMobile);
   const isHydrated = useHydration();
   const dispatchAlbumSelectionAction = useStore(
     (store) => store.dispatchAlbumSelectionAction
@@ -45,16 +56,18 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
   };
 
   return (
-    <form
-      style={{
+    <Container
+      component="form"
+      sx={{
         position: "sticky",
         top: 40,
         width: "100%",
-        height: "100px",
+        maxHeight: ["100%", "120px"],
+        padding: ["1rem", "0.5rem"],
         backgroundColor: "white",
         zIndex: 3,
         display: "flex",
-        flexDirection: "row",
+        flexDirection: ["column", "row"],
         justifyContent: "center",
         alignItems: "center",
         gap: "20px",
@@ -85,34 +98,106 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
           }
         />
       </FormControl>
-      <Select
-        value={sortOption}
-        onChange={(event) =>
-          dispatch({
-            type: "update_sort_option",
-            payload: event.target.value as SortOption,
-          })
-        }
-      >
-        {Object.values(SortOption).map((optionValue) => (
-          <MenuItem key={optionValue} value={optionValue}>
-            {optionValue}
-          </MenuItem>
-        ))}
-      </Select>
-      <Button
-        disabled={!isHydrated}
-        variant="outlined"
-        color="secondary"
-        onClick={() =>
-          dispatchAlbumSelectionAction({ type: "clear", payload: null })
-        }
-      >
-        Clear
-      </Button>
-      <Button variant="outlined" color="primary" onClick={handleSelectAll}>
-        Select All
-      </Button>
-    </form>
+      {isMobile ? (
+        <Collapse in={isMobile ? !hideFormInputs : true}>
+          <Select
+            value={sortOption}
+            onChange={(event) =>
+              dispatch({
+                type: "update_sort_option",
+                payload: event.target.value as SortOption,
+              })
+            }
+          >
+            {Object.values(SortOption).map((optionValue) => (
+              <MenuItem key={optionValue} value={optionValue}>
+                {optionValue}
+              </MenuItem>
+            ))}
+          </Select>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: ["100%", "25%"],
+              justifyContent: ["space-between", "space-evenly"],
+              gap: ".25rem",
+            }}
+          >
+            <Button
+              disabled={!isHydrated}
+              variant="outlined"
+              color="secondary"
+              onClick={() =>
+                dispatchAlbumSelectionAction({ type: "clear", payload: null })
+              }
+            >
+              Clear
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleSelectAll}
+            >
+              Select All
+            </Button>
+          </Box>
+        </Collapse>
+      ) : (
+        <>
+          <Select
+            value={sortOption}
+            onChange={(event) =>
+              dispatch({
+                type: "update_sort_option",
+                payload: event.target.value as SortOption,
+              })
+            }
+          >
+            {Object.values(SortOption).map((optionValue) => (
+              <MenuItem key={optionValue} value={optionValue}>
+                {optionValue}
+              </MenuItem>
+            ))}
+          </Select>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              width: ["100%", "25%"],
+              justifyContent: ["space-between", "space-evenly"],
+              gap: ".25rem",
+            }}
+          >
+            <Button
+              disabled={!isHydrated}
+              variant="outlined"
+              color="secondary"
+              onClick={() =>
+                dispatchAlbumSelectionAction({ type: "clear", payload: null })
+              }
+            >
+              Clear
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleSelectAll}
+            >
+              Select All
+            </Button>
+          </Box>
+        </>
+      )}
+
+      {isMobile && (
+        <IconButton
+          type="button"
+          onClick={() => setHideFormInputs((val) => !val)}
+        >
+          {hideFormInputs ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+        </IconButton>
+      )}
+    </Container>
   );
 };

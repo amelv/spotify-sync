@@ -38,9 +38,9 @@ export const AlbumCard = memo(
       <Card
         raised={!isSelected}
         sx={(theme) => ({
-          maxWidth: 345,
-
-          height: 372,
+          width: "100%",
+          height: "100%",
+          maxHeight: 400,
           outline: isSelected
             ? `5px solid ${theme.palette.secondary.main}`
             : "none",

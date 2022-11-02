@@ -96,7 +96,7 @@ export const useSavedAlbumsQuery = (state: SelectorState) => {
   >(
     ["saved-albums", isHydrated, accessToken],
     async () => {
-      if (!isHydrated) {
+      if (!isHydrated || !accessToken) {
         return undefined;
       }
       try {

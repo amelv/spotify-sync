@@ -31,6 +31,7 @@ export const storePersistConfig: PersistOptions<AppState> = {
         selectedAlbums: Array.from(data.state.selectedAlbums.entries()),
         tokens: {
           ...data.state.tokens,
+          access: "",
           expiresAt: !!data.state.tokens.expiresAt
             ? data.state.tokens.expiresAt.getTime()
             : undefined,

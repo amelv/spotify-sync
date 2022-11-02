@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useHydration, useStore } from "src/store";
+import shallow from "zustand/shallow";
 
 export const useTokenRefresh = () => {
   const isHydrated = useHydration();
-  const { refresh, expiresIn, expiresAt } = useStore((store) => store.tokens);
+  const { access, refresh, expiresIn, expiresAt } = useStore(
+    (store) => store.tokens,
+    shallow
+  );
   const dispatchTokensAction = useStore((store) => store.dispatchTokensAction);
 
   useEffect(() => {
@@ -39,7 +43,7 @@ export const useTokenRefresh = () => {
       }
     };
 
-    if (expiresAt && Date.now() >= expiresAt.getTime()) {
+    if (!access || (expiresAt && Date.now() >= expiresAt.getTime())) {
       refreshCallback();
     }
     return () => {

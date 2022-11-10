@@ -1,6 +1,6 @@
 import { Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as Logo } from "src/assets/logo.svg";
+import logo from "src/assets/spotify.png";
 import { withAuth } from "src/components/WithAuth";
 import { useHydration, useStore } from "src/store";
 
@@ -26,7 +26,7 @@ export const Landing = withAuth(() => {
         gap: "30px",
       }}
     >
-      <Logo />
+      <img src={logo} width="100" height="100" />
       <Typography align="center" variant="h1">
         Spotify Albums to Songs Sync
       </Typography>

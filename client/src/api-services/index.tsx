@@ -1,6 +1,6 @@
 import { AxiosResponse } from "axios";
-
 import SpotifyRequestInterface from "src/api-services/spotifyApiRequest";
+import TrieSearch from "trie-search";
 
 const spotifyAPI = new SpotifyRequestInterface();
 
@@ -11,11 +11,13 @@ const QUERY_LIMIT = 20;
 const getNextOffset = (url: string | null): number | null =>
   url ? Number(new URL(url).searchParams.get("offset")) : null;
 
+export type SavedAlbums =
+  SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> & {
+    albumDictionary?: any;
+  };
 export const getSavedAlbums = async (
   accessToken: string
-): Promise<
-  AxiosResponse<SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject>, any>
-> => {
+): Promise<AxiosResponse<SavedAlbums, any>> => {
   try {
     const checkTotalAlbumsResponse =
       await spotifyAPI.makeRequest<SpotifyApi.UsersSavedAlbumsResponse>({
@@ -47,9 +49,24 @@ export const getSavedAlbums = async (
       },
       []
     );
+
+    const albumDictionary = new TrieSearch();
+
+    albums.forEach((savedAlbum) => {
+      const key = `${savedAlbum.album.name} ${savedAlbum.album.artists.reduce(
+        (names, artist) => `${names}${artist.name} `,
+        ""
+      )}`;
+      albumDictionary.map(key, savedAlbum);
+    });
+
     return {
       ...albumGroupResponses.at(-1)!,
-      data: { ...albumGroupResponses.at(-1)!.data, items: albums },
+      data: {
+        ...albumGroupResponses.at(-1)!.data,
+        items: albums,
+        albumDictionary: albumDictionary,
+      },
     };
   } catch (error) {
     return Promise.reject(error);

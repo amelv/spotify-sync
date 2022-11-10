@@ -9,11 +9,12 @@ export enum SortOption {
   DESCENDING_ALBUM = "Album Name (Z-A)",
   ASCENDING_ARTIST = "Artist (A-Z)",
   DESCENDING_ARTIST = "Artist (Z-A)",
+  POPULARITY = "Popularity",
 }
 
 export interface SelectorState {
   searchQuery: string;
-  sortOption: SortOption;
+  sortOption: SortOption | "";
   albumGridSize: number;
 }
 
@@ -38,12 +39,12 @@ export type SelectorActionType =
     }
   | {
       type: "update_sort_option";
-      payload: SortOption;
+      payload: SortOption | "";
     };
 const ALBUM_INTERVAL = 24;
-const initialState = {
+const initialState: SelectorState = {
   searchQuery: "",
-  sortOption: SortOption.DESCENDING_ADD_DATE,
+  sortOption: "",
   albumGridSize: ALBUM_INTERVAL,
 };
 

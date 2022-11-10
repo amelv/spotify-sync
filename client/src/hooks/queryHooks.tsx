@@ -1,28 +1,9 @@
 import { useCallback } from "react";
 import { useQuery } from "react-query";
-import { getSavedAlbums } from "src/api-services";
+import { getSavedAlbums, SavedAlbums } from "src/api-services";
 import { useTokenRefresh } from "src/hooks";
 import { SelectorState, SortOption } from "src/hooks/useSelectorState";
 import { useHydration, useStore } from "src/store";
-
-const filterAlbum = (
-  searchQuery: string,
-  savedAlbum: SpotifyApi.SavedAlbumObject
-) => {
-  const normalizedQuery = searchQuery.toLowerCase().split(" ");
-
-  const normalizedArtists = savedAlbum.album.artists.reduce<string[]>(
-    (list, artist) => [...list, ...artist.name.toLowerCase().split(" ")],
-    []
-  );
-  const normalizedAlbumName = savedAlbum.album.name.toLowerCase().split(" ");
-
-  return normalizedQuery.some((q) =>
-    [...normalizedArtists, ...normalizedAlbumName].some((str) =>
-      str.includes(q)
-    )
-  );
-};
 
 const ALBUM_INTERVAL = 24;
 
@@ -45,12 +26,12 @@ const sortAlbums = (
     case SortOption.ASCENDING_RELEASE_DATE:
       return (
         new Date(savedAlbumA.album.release_date).getTime() -
-        new Date(savedAlbumB.added_at).getTime()
+        new Date(savedAlbumB.album.release_date).getTime()
       );
     case SortOption.DESCENDING_RELEASE_DATE:
       return (
         new Date(savedAlbumB.album.release_date).getTime() -
-        new Date(savedAlbumA.added_at).getTime()
+        new Date(savedAlbumA.album.release_date).getTime()
       );
     case SortOption.ASCENDING_ALBUM:
       return savedAlbumA.album.name.localeCompare(savedAlbumB.album.name);
@@ -62,6 +43,8 @@ const sortAlbums = (
       return savedAlbumB.album.artists[0].name.localeCompare(
         savedAlbumA.album.artists[0].name
       );
+    case SortOption.POPULARITY:
+      return savedAlbumB.album.popularity - savedAlbumA.album.popularity;
     default:
       return 0;
   }
@@ -73,18 +56,24 @@ export const useSavedAlbumsQuery = (state: SelectorState) => {
   const { searchQuery, sortOption } = state;
 
   useTokenRefresh();
-
   const selectAlbumsFromQuery = useCallback(
-    (
-      data: SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined
-    ): SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined => {
+    (data: SavedAlbums | undefined): SavedAlbums | undefined => {
       if (!data) {
         return undefined;
       }
-
-      const albums = data.items
-        .filter((savedAlbum) => filterAlbum(searchQuery, savedAlbum))
-        .sort((a, b) => sortAlbums(sortOption, a, b));
+      const sortType =
+        sortOption === ""
+          ? searchQuery === ""
+            ? SortOption.DESCENDING_ADD_DATE
+            : SortOption.POPULARITY
+          : sortOption;
+      const albums = (
+        searchQuery === ""
+          ? data.items
+          : (data.albumDictionary.search(
+              searchQuery
+            ) as SpotifyApi.SavedAlbumObject[])
+      ).sort((a, b) => sortAlbums(sortType, a, b));
 
       return { ...data, items: albums };
     },
@@ -95,17 +84,18 @@ export const useSavedAlbumsQuery = (state: SelectorState) => {
     SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined
   >(
     ["saved-albums", isHydrated, accessToken],
-    async () => {
+    useCallback(async () => {
       if (!isHydrated || !accessToken) {
         return undefined;
       }
       try {
         const response = await getSavedAlbums(accessToken);
+        console.log("running query function");
         return response.data;
       } catch (error) {
         return Promise.reject(error);
       }
-    },
+    }, [isHydrated, accessToken]),
     {
       select: selectAlbumsFromQuery,
       keepPreviousData: false,

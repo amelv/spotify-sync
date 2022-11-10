@@ -42,18 +42,19 @@ export const AlbumCard = memo(
           height: "100%",
           maxHeight: 400,
           outline: isSelected
-            ? `5px solid ${theme.palette.secondary.main}`
+            ? `5px solid ${theme.palette.primary.main}`
             : "none",
           boxShadow: isSelected
             ? "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
             : undefined,
           transition: "outline 0.3s ease, box-shadow 0.3s ease",
           positon: "relative",
+          borderRadius: "6px",
         })}
       >
         <CardActionArea
           sx={(theme) => ({
-            ["& span.MuiCardActionArea-focusHighlight"]: {
+            "& span.MuiCardActionArea-focusHighlight": {
               opacity: isSelected
                 ? theme.palette.action.selectedOpacity
                 : undefined,
@@ -61,7 +62,7 @@ export const AlbumCard = memo(
                 ? theme.palette.primary.main
                 : undefined,
             },
-            ["&:hover span.MuiCardActionArea-focusHighlight"]: {
+            "&:hover span.MuiCardActionArea-focusHighlight": {
               opacity: isSelected
                 ? theme.palette.action.selectedOpacity * 1.5
                 : undefined,
@@ -69,13 +70,16 @@ export const AlbumCard = memo(
                 ? theme.palette.primary.main
                 : undefined,
             },
-            ["&.Mui-focusVisible span.MuiCardActionArea-focusHighlight"]: {
+            "&.Mui-focusVisible span.MuiCardActionArea-focusHighlight": {
               opacity: isSelected
                 ? theme.palette.action.selectedOpacity * 1.5
                 : undefined,
               backgroundColor: isSelected
                 ? theme.palette.primary.main
                 : undefined,
+            },
+            "&:focused": {
+              backgroundColor: "282828",
             },
             height: 372,
             position: "relative",

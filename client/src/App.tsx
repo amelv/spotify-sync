@@ -24,7 +24,7 @@ const AppContainer = styled("div")`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background-color: #f0eeeb;
+  background: linear-gradient(#181818, #121212);
   padding: 4rem 1rem 0 1rem;
   min-height: 100vh;
   max-width: 100vw;
@@ -40,6 +40,18 @@ const theme = responsiveFontSizes(
         main: "#1DB954",
       },
       secondary: { main: "#191414" },
+      background: {
+        default: "linear-gradient(#121212, #181818)",
+        paper: "#181818",
+      },
+      info: {
+        main: "#FFFFFF",
+      },
+      text: {
+        primary: "#FFFFFF",
+        secondary: "#B3B3B3",
+        disabled: "#747474",
+      },
       error: {
         main: "#ea3434",
       },
@@ -51,6 +63,13 @@ const theme = responsiveFontSizes(
       },
     },
     typography: {
+      fontFamily: [
+        "-apple-system",
+        "BlinkMacSystemFont",
+        '"Helvetica Neue"',
+        "Roboto",
+        "Arial",
+      ].join(","),
       h1: {
         fontSize: "4rem",
         fontWeight: 500,

@@ -27,7 +27,7 @@ export const withAuth = (Component: FunctionComponent) => (props: any) => {
     if (isHydrated && !access && !refresh) {
       navigate("/login", { replace: true, state: { from: location } });
     }
-  }, [access, navigate, location, isHydrated]);
+  }, [access, refresh, navigate, location, isHydrated]);
 
   return isHydrated ? <Component {...props} /> : <LoadingAccess />;
 };

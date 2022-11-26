@@ -9,6 +9,7 @@
     "node": "18.x"
   },
   "dependencies": {
+    "@types/react-addons-perf": "^15.4.0",
     "axios": "^0.27.2",
     "cookieparser": "^0.1.0",
     "cors": "^2.8.5",

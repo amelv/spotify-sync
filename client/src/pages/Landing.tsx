@@ -26,7 +26,7 @@ export const Landing = withAuth(() => {
         gap: "30px",
       }}
     >
-      <img src={logo} width="100" height="100" />
+      <img src={logo} width="100" height="100" alt="" />
       <Typography align="center" variant="h1">
         Spotify Albums to Songs Sync
       </Typography>

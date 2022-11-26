@@ -1,59 +1,58 @@
+import { sort } from "fast-sort";
 import { useCallback } from "react";
 import { useQuery } from "react-query";
 import { getSavedAlbums, SavedAlbums } from "src/api-services";
 import { useTokenRefresh } from "src/hooks";
-import { SelectorState, SortOption } from "src/hooks/useSelectorState";
+import { SortOption } from "src/hooks/useSelectorState";
 import { useHydration, useStore } from "src/store";
-
-const ALBUM_INTERVAL = 24;
 
 const sortAlbums = (
   sortOption: SortOption,
-  savedAlbumA: SpotifyApi.SavedAlbumObject,
-  savedAlbumB: SpotifyApi.SavedAlbumObject
+  albums: SpotifyApi.SavedAlbumObject[]
 ) => {
   switch (sortOption) {
     case SortOption.ASCENDING_ADD_DATE:
-      return (
-        new Date(savedAlbumA.added_at).getTime() -
-        new Date(savedAlbumB.added_at).getTime()
-      );
+      return sort(albums).asc((album) => new Date(album.added_at).getTime());
     case SortOption.DESCENDING_ADD_DATE:
-      return (
-        new Date(savedAlbumB.added_at).getTime() -
-        new Date(savedAlbumA.added_at).getTime()
-      );
+      return sort(albums).desc((album) => new Date(album.added_at).getTime());
     case SortOption.ASCENDING_RELEASE_DATE:
-      return (
-        new Date(savedAlbumA.album.release_date).getTime() -
-        new Date(savedAlbumB.album.release_date).getTime()
+      return sort(albums).asc(({ album }) =>
+        new Date(album.release_date).getTime()
       );
     case SortOption.DESCENDING_RELEASE_DATE:
-      return (
-        new Date(savedAlbumB.album.release_date).getTime() -
-        new Date(savedAlbumA.album.release_date).getTime()
+      return sort(albums).desc(({ album }) =>
+        new Date(album.release_date).getTime()
       );
     case SortOption.ASCENDING_ALBUM:
-      return savedAlbumA.album.name.localeCompare(savedAlbumB.album.name);
+      return sort(albums).asc(({ album }) => album.name.toLocaleLowerCase());
     case SortOption.DESCENDING_ALBUM:
-      return savedAlbumB.album.name.localeCompare(savedAlbumA.album.name);
+      return sort(albums).desc(({ album }) => album.name.toLocaleLowerCase());
     case SortOption.ASCENDING_ARTIST:
-      return savedAlbumA.album.name.localeCompare(savedAlbumB.album.name);
+      return sort(albums).asc(({ album }) =>
+        album.artists
+          .map(({ name }) => name)
+          .join(", ")
+          .toLocaleLowerCase()
+      );
     case SortOption.DESCENDING_ARTIST:
-      return savedAlbumB.album.artists[0].name.localeCompare(
-        savedAlbumA.album.artists[0].name
+      return sort(albums).desc(({ album }) =>
+        album.artists
+          .map(({ name }) => name)
+          .join(", ")
+          .toLocaleLowerCase()
       );
     case SortOption.POPULARITY:
-      return savedAlbumB.album.popularity - savedAlbumA.album.popularity;
+      return sort(albums).desc(({ album }) => album.popularity);
     default:
-      return 0;
+      return [];
   }
 };
 
-export const useSavedAlbumsQuery = (state: SelectorState) => {
+export const useSavedAlbumsQuery = () => {
   const isHydrated = useHydration();
   const accessToken = useStore((store) => store.tokens.access);
-  const { searchQuery, sortOption } = state;
+  const searchQuery = useStore((store) => store.searchQuery);
+  const sortOption = useStore((store) => store.sortOption);
 
   useTokenRefresh();
   const selectAlbumsFromQuery = useCallback(
@@ -67,14 +66,15 @@ export const useSavedAlbumsQuery = (state: SelectorState) => {
             ? SortOption.DESCENDING_ADD_DATE
             : SortOption.POPULARITY
           : sortOption;
-      const albums = (
+
+      const filteredAlbums =
         searchQuery === ""
           ? data.items
           : (data.albumDictionary.search(
               searchQuery
-            ) as SpotifyApi.SavedAlbumObject[])
-      ).sort((a, b) => sortAlbums(sortType, a, b));
+            ) as SpotifyApi.SavedAlbumObject[]);
 
+      const albums = sortAlbums(sortType, filteredAlbums);
       return { ...data, items: albums };
     },
     [searchQuery, sortOption]

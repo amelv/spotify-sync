@@ -15,39 +15,25 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import {
-  ChangeEvent,
-  Dispatch,
-  FormEvent,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
-import {
-  SelectorActionType,
-  SelectorState,
-  SortOption,
-} from "src/hooks/useSelectorState";
+import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from "react";
+import { SortOption } from "src/hooks/useSelectorState";
 import { useHydration, useStore } from "src/store";
 
 interface Props {
-  selectorState: [SelectorState, Dispatch<SelectorActionType>];
   handleSelectAll: () => void;
 }
 
-const ALBUM_INTERVAL = 24;
-
-export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
+export const FilterAlbumsForm = ({ handleSelectAll }: Props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [{ searchQuery, sortOption }, dispatch] = selectorState;
+  const searchQuery = useStore((store) => store.searchQuery);
+  const sortOption = useStore((store) => store.sortOption);
+  const dispatch = useStore((store) => store.dispatchAlbumSelectionAction);
+
   const [searchInputValue, setSearchInputValue] = useState(searchQuery);
   const [hideFormInputs, setHideFormInputs] = useState(isMobile);
   const isHydrated = useHydration();
-  const dispatchAlbumSelectionAction = useStore(
-    (store) => store.dispatchAlbumSelectionAction
-  );
 
   const debouncedQueryDisptach = useMemo(
     () =>
@@ -55,7 +41,7 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
         event.preventDefault();
         if (searchQuery !== event.target.value) {
           dispatch({
-            type: "update_search_query",
+            type: "update-search",
             payload: event.target.value,
           });
           if (window.scrollY > 0) {
@@ -79,13 +65,12 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
     },
     [debouncedQueryDisptach]
   );
-
   return (
     <Container
       component="form"
       sx={(theme) => ({
         position: "sticky",
-        top: 40,
+        top: -2,
         width: "100%",
         maxHeight: ["100%", "120px"],
         padding: ["1rem", "0.5rem"],
@@ -96,7 +81,7 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
         justifyContent: "center",
         alignItems: "center",
         gap: "20px",
-        border: "2px solid black",
+        border: "2px solid #282828",
         boxShadow:
           "0px 7px 7px -4px rgba(0,0,0,0.2),0px 10px 13px 2px rgba(0,0,0,0.14),0px 4px 17px 3px rgba(0,0,0,0.12)",
         borderRadius: "4px",
@@ -151,7 +136,7 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
             placeholder="Select sort option"
             onChange={(event) =>
               dispatch({
-                type: "update_sort_option",
+                type: "update-sort",
                 payload: event.target.value as SortOption,
               })
             }
@@ -175,9 +160,7 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
               disabled={!isHydrated}
               variant="outlined"
               color="secondary"
-              onClick={() =>
-                dispatchAlbumSelectionAction({ type: "clear", payload: null })
-              }
+              onClick={() => dispatch({ type: "clear", payload: null })}
             >
               Clear
             </Button>
@@ -238,7 +221,7 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
             }}
             onChange={(event) =>
               dispatch({
-                type: "update_sort_option",
+                type: "update-sort",
                 payload: event.target.value as SortOption,
               })
             }
@@ -262,9 +245,7 @@ export const FilterAlbumsForm = ({ selectorState, handleSelectAll }: Props) => {
               disabled={!isHydrated}
               variant="outlined"
               color="info"
-              onClick={() =>
-                dispatchAlbumSelectionAction({ type: "clear", payload: null })
-              }
+              onClick={() => dispatch({ type: "clear", payload: null })}
             >
               Clear
             </Button>

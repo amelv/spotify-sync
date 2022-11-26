@@ -24,7 +24,7 @@ const AppContainer = styled("div")`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  background: linear-gradient(#181818, #121212);
+  background: linear-gradient(#282828, #121212);
   padding: 4rem 1rem 0 1rem;
   min-height: 100vh;
   max-width: 100vw;

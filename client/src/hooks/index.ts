@@ -49,5 +49,5 @@ export const useTokenRefresh = () => {
     return () => {
       refreshIsCancelled = true;
     };
-  }, [refresh, expiresIn, expiresAt, dispatchTokensAction, isHydrated]);
+  }, [access, refresh, expiresIn, expiresAt, dispatchTokensAction, isHydrated]);
 };

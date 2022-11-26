@@ -7,7 +7,9 @@ import {
   Fade,
   Typography,
 } from "@mui/material";
+import { FastAverageColor } from "fast-average-color";
 import { memo } from "react";
+import { useQuery } from "react-query";
 import { useHydration, useStore } from "src/store";
 import shallow from "zustand/shallow";
 
@@ -19,6 +21,24 @@ export const AlbumCard = memo(
   ({ album }: AlbumCardProps) => {
     const image = album.images[0];
 
+    const { data: bgColor } = useQuery([album.id, image.url], {
+      queryFn: async () => {
+        const averageColorCalcuator = new FastAverageColor();
+        if (image.url) {
+          try {
+            return await averageColorCalcuator.getColorAsync(image.url);
+          } catch (error) {
+            console.error(error);
+            return undefined;
+          }
+        }
+        return undefined;
+      },
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      cacheTime: Infinity,
+    });
+    console.log(bgColor);
     const [isSelected, dispatchAlbumSelectionAction] = useStore(
       (store) => [
         !!store.selectedAlbums.get(album.id),
@@ -47,9 +67,11 @@ export const AlbumCard = memo(
           boxShadow: isSelected
             ? "rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset"
             : undefined,
-          transition: "outline 0.3s ease, box-shadow 0.3s ease",
+          transition:
+            "outline 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease",
           positon: "relative",
           borderRadius: "6px",
+          opacity: !!bgColor ? 1 : 0,
         })}
       >
         <CardActionArea
@@ -99,7 +121,7 @@ export const AlbumCard = memo(
                 position: "absolute",
                 width: 120,
                 height: 120,
-                zIndex: 2,
+                zIndex: 1,
                 color: theme.palette.secondary.main,
                 margin: "auto",
                 left: 0,
@@ -110,17 +132,34 @@ export const AlbumCard = memo(
             />
           </Fade>
           <CardMedia
+            sx={{ zIndex: 0, position: "relative" }}
             id="album-image"
             component="img"
+            crossOrigin="anonymous"
             height={240}
             image={image.url}
             alt=""
           />
-          <CardContent sx={{ height: "100%" }}>
-            <Typography gutterBottom variant="h5" component="div">
+          <CardContent
+            sx={{
+              height: "100%",
+              background: !!bgColor
+                ? `linear-gradient(${bgColor?.rgb}, #121212);`
+                : undefined,
+            }}
+          >
+            <Typography
+              gutterBottom
+              variant="h5"
+              component="div"
+              color={bgColor?.isLight ? "#121212" : undefined}
+            >
               {album.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color={bgColor?.isLight ? "#181818" : "text.secondary"}
+            >
               {album.artists.map((artist) => artist.name).join(", ")}
             </Typography>
           </CardContent>

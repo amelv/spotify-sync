@@ -23,7 +23,9 @@ export const SelectAlbums = withAuth(() => {
         This will add all songs from your current saved albums into your "Liked
         Songs" playlist.
       </Typography>
+
       <AlbumSelector />
+
       <Container
         sx={{
           position: "sticky",
@@ -32,6 +34,7 @@ export const SelectAlbums = withAuth(() => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          zIndex: 2,
         }}
       >
         <Fab

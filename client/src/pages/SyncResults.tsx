@@ -5,7 +5,7 @@ import { useSyncRequest } from "src/hooks/useSyncRequest";
 
 export const SyncResults = withAuth(() => {
   const navigate = useNavigate();
-  const { status, progress } = useSyncRequest();
+  const { status, progress, refetch } = useSyncRequest();
 
   return (
     <Container
@@ -21,16 +21,25 @@ export const SyncResults = withAuth(() => {
     >
       <Typography variant="h1">Sync</Typography>
       {status}
-      {status !== "start" && (
+      {status === "loading" && (
         <LinearProgress
           sx={{ height: 10, width: "100%", marginTop: 20 }}
           variant="determinate"
           value={progress * 100}
         />
       )}
-      {status === "success" && (
-        <Button variant="contained" onClick={() => navigate("/")}>
-          Done
+
+      <Button
+        variant="contained"
+        onClick={() => navigate("/")}
+        disabled={status === "loading"}
+      >
+        Done
+      </Button>
+
+      {status === "error" && (
+        <Button variant="contained" color="primary" onClick={() => refetch()}>
+          Retry
         </Button>
       )}
     </Container>

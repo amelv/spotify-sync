@@ -20,6 +20,8 @@ const zustandStorage: StateStorage = {
   },
 };
 
+const ALBUM_INTERVAL = 24;
+
 export const storePersistConfig: PersistOptions<AppState> = {
   name: "spotify-album-songs-sync-store",
   getStorage: () => zustandStorage,
@@ -29,6 +31,7 @@ export const storePersistConfig: PersistOptions<AppState> = {
       state: {
         ...data.state,
         selectedAlbums: Array.from(data.state.selectedAlbums.entries()),
+        albumGridSize: ALBUM_INTERVAL,
         tokens: {
           ...data.state.tokens,
           access: "",

@@ -11,7 +11,20 @@ import { Middleware, storePersistConfig } from "src/store/middleware";
 import { createSyncSlice, SyncSlice } from "src/store/syncSlice";
 import { createTokensSlice, TokensSlice } from "src/store/tokensSlice";
 
-export type AppState = AlbumSelectionSlice & SyncSlice & TokensSlice;
+interface StepSlice {
+  activeStep: number;
+  dispatchSlice: (step: number) => void;
+}
+
+const createStepSlice: SliceCreator<StepSlice> = (set) => ({
+  activeStep: 0,
+  dispatchSlice: (step) => set({ activeStep: step }),
+});
+
+export type AppState = AlbumSelectionSlice &
+  SyncSlice &
+  TokensSlice &
+  StepSlice;
 export type SliceCreator<S> = StateCreator<AppState, Middleware, [], S>;
 
 const createAppState: StateCreator<AppState, Middleware, [], AppState> = (
@@ -20,6 +33,7 @@ const createAppState: StateCreator<AppState, Middleware, [], AppState> = (
   ...createAlbumSelectionSlice(...stateCreator),
   ...createSyncSlice(...stateCreator),
   ...createTokensSlice(...stateCreator),
+  ...createStepSlice(...stateCreator),
 });
 
 export const useStore = create<AppState>()(

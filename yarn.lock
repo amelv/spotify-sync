@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@types/react-addons-perf@^15.4.0":
+  version "15.4.0"
+  resolved "https://registry.yarnpkg.com/@types/react-addons-perf/-/react-addons-perf-15.4.0.tgz#5e15e74d31d16278fc445cda7975cfb50e586b8a"
+  integrity sha512-5nwNZcVSsftqNj6kl/s48yKFL2VDQBPCPC1wkEeD430s9g/p80ysAYUOxCPBo7OU5OX7Ofo3KMrJzml5Jw8Now==
+
 abbrev@1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/abbrev/-/abbrev-1.1.1.tgz#f8f2c887ad10bf67f634f005b6987fed3179aac8"

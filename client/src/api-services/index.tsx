@@ -6,11 +6,6 @@ const spotifyAPI = new SpotifyRequestInterface();
 
 const ALBUM_LIMIT = 50;
 
-const QUERY_LIMIT = 20;
-
-const getNextOffset = (url: string | null): number | null =>
-  url ? Number(new URL(url).searchParams.get("offset")) : null;
-
 export type SavedAlbums =
   SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> & {
     albumDictionary?: any;

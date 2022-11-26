@@ -67,39 +67,52 @@ export const getSavedAlbums = async (
     return Promise.reject(error);
   }
 };
-//TODO: save tracks for albums greater than 50
+
 export const syncSongsFromAlbumsRequest = async (
   accessToken: string,
   action: "save" | "delete",
   onProgress: (value: number) => void,
   albums?: Map<string, SpotifyApi.AlbumObjectFull>
 ): Promise<AxiosResponse<SpotifyApi.SaveTracksForUserResponse, any>[]> => {
+  const reduceAlbumsToTrackSyncPromises = (
+    albums: Array<SpotifyApi.AlbumObjectFull>
+  ) =>
+    albums.reduce(
+      (promises, album, index, { length }) => [
+        ...promises,
+        ...new Array(Math.ceil(album.tracks.items.length / ALBUM_LIMIT))
+          .fill(undefined)
+          .map((_, idx) =>
+            spotifyAPI
+              .makeRequest<SpotifyApi.SaveTracksForUserResponse>({
+                accessToken,
+                urlEndpoint: `me/tracks`,
+                method: action === "save" ? "PUT" : "DELETE",
+                data: JSON.stringify(
+                  album.tracks.items
+                    .slice(50 * idx, 50 * (idx + 1))
+                    .map((track) => track.id)
+                ),
+              })
+              .then((data) => {
+                console.log(index / (length - 1));
+                onProgress(index / (length - 1));
+                return data;
+              })
+          ),
+      ],
+      [] as Promise<any>[]
+    );
   try {
+    // If array of albums to sync provided
     if (albums) {
       return Promise.all(
-        Array.from(albums.values()).map((album, index, array) =>
-          spotifyAPI
-            .makeRequest<SpotifyApi.SaveTracksForUserResponse>({
-              accessToken,
-              urlEndpoint: `me/tracks`,
-              method: action === "save" ? "PUT" : "DELETE",
-              data: JSON.stringify(
-                album.tracks.items.slice(0, 50).map((track) => track.id)
-              ),
-            })
-            .then((data) => {
-              onProgress(index / array.length);
-              return data;
-            })
-        )
+        reduceAlbumsToTrackSyncPromises(Array.from(albums.values()))
       );
     }
 
     const allSavedAlbumsResponse = await getSavedAlbums(accessToken);
-
-    return Promise.all(
-      allSavedAlbumsResponse.data.items.map(({ album }, index, array) =>
-        spotifyAPI
+    /*spotifyAPI
           .makeRequest<SpotifyApi.SaveTracksForUserResponse>({
             accessToken,
             urlEndpoint: `me/tracks`,
@@ -109,9 +122,13 @@ export const syncSongsFromAlbumsRequest = async (
             ),
           })
           .then((data) => {
-            onProgress(index / array.length);
+            onProgress(index / length - 1);
             return data;
-          })
+          })*/
+    // Else, we sync all albums
+    return Promise.all(
+      reduceAlbumsToTrackSyncPromises(
+        allSavedAlbumsResponse.data.items.map(({ album }) => album)
       )
     );
   } catch (error) {

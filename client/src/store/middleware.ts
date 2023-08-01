@@ -8,6 +8,9 @@ export type Middleware = [
   ["zustand/immer", never]
 ];
 
+/**
+ * A custom storage implementation for zustand that uses IndexedDB.
+ */
 const zustandStorage: StateStorage = {
   getItem: async (key: string): Promise<any | null> => {
     return (await get(key)) || null;
@@ -22,6 +25,9 @@ const zustandStorage: StateStorage = {
 
 const ALBUM_INTERVAL = 24;
 
+/**
+ * A configuration object for the zustand persist middleware.
+ */
 export const storePersistConfig: PersistOptions<AppState> = {
   name: "spotify-album-songs-sync-store",
   getStorage: () => zustandStorage,

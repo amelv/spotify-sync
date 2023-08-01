@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import { useHydration, useStore } from "src/store";
 import shallow from "zustand/shallow";
 
+/**
+ * Custom hook that refreshes the access token when it expires.
+ */
 export const useTokenRefresh = () => {
   const isHydrated = useHydration();
   const { access, refresh, expiresIn, expiresAt } = useStore(

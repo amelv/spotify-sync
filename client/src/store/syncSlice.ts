@@ -12,6 +12,15 @@ export interface SyncSlice {
   setSyncState: (state: SyncState) => void;
 }
 
+/**
+ * Creates a slice for managing the sync state. The slice contains the
+ * following state:
+ * - syncState: the sync state
+ * - setSyncState: a function that sets the sync state
+ * 
+ * @param set 
+ * @returns 
+ */
 export const createSyncSlice: SliceCreator<SyncSlice> = (set) => ({
   syncState: {
     allAlbums: false,

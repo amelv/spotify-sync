@@ -7,6 +7,11 @@ import { useHydration, useStore } from "src/store";
 
 const ALBUM_INTERVAL = 24;
 
+/**
+ * The component where we select the albums to sync. Displays a list of albums
+ * and a form to filter them.
+ * @returns 
+ */
 export const AlbumSelector = () => {
   const isHydrated = useHydration();
   const dispatch = useStore((store) => store.dispatchAlbumSelectionAction);

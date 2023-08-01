@@ -1,5 +1,8 @@
 import { Container, Typography } from "@mui/material";
 
+/**
+ * A simple footer.
+ */
 export const Footer = () => (
   <Container
     sx={{

@@ -17,6 +17,10 @@ interface AlbumCardProps {
   album: SpotifyApi.AlbumObjectFull;
 }
 
+/**
+ * A card that displays an album. The card is highlighted if the album is selected.
+ * @prop album - The album to display.
+ */
 export const AlbumCard = memo(
   ({ album }: AlbumCardProps) => {
     const image = album.images[0];

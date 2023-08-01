@@ -15,6 +15,9 @@ import { ChangeEvent, useMemo, useState } from "react";
 import { useHydration, useStore } from "src/store";
 import TrieSearch from "trie-search";
 
+/**
+ * The list of selected albums. The list is searchable. Clicking on an album will expand it to show its tracks.
+ */
 export const SelectedAlbumsList = () => {
   const isHydrated = useHydration();
   const selectedAlbums = useStore((store) => store.selectedAlbums);

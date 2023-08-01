@@ -20,6 +20,11 @@ const getMillisToSleep = (retryHeaderString: string) => {
   return millisToSleep;
 };
 
+/**
+ * Rate limiter that uses a token bucket algorithm to limit the number of requests
+ * that can be made in a given time window. If the number of requests exceeds the
+ * limit, the requests are queued and executed when the next time window opens.
+ */
 class RequestRateLimiter {
   maxRequests: number;
   maxRequestWindowMS: number;
@@ -60,14 +65,31 @@ interface SpotifyApiRequest {
     data?: any;
   }
 
+/**
+ * Class for making requests to the Spotify API.
+ */
 export default class SpotifyRequestInterface {
-    // Create new rate limit token bucker
+    /**
+     * The maximum number of requests that can be made in a given time window.
+     */
     maxRequests = 10;
     maxRequestWindowMS = 1000;
     tokenBucket = new RequestRateLimiter({ maxRequests: this.maxRequests, maxRequestWindowMS: this.maxRequestWindowMS });
 
+    /**
+     * The base URL for the Spotify API.
+     */
     baseURL = "https://api.spotify.com/v1";
 
+    /**
+     * Makes a request to the Spotify API. If the request fails due to rate limiting,
+     * the request is retried after the retry-after time specified in the response.
+     * 
+     * @param accessToken - The access token to use for the request.
+     * @param urlEndpoint - The endpoint to make the request to.
+     * @param method - The HTTP method to use for the request.
+     * @param data - The data to send with the request.
+     */
     makeRequest = async <DataType = any>({
         accessToken,
         urlEndpoint,

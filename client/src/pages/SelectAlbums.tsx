@@ -4,6 +4,11 @@ import { AlbumSelector } from "src/components/AlbumSelector";
 import { withAuth } from "src/components/WithAuth";
 import { useStore } from "src/store";
 
+/**
+ * The page where the user selects which albums to add to their "Liked Songs"
+ * playlist. The user can select all albums or just a few. The user can also
+ * go back to the home page or continue to the next page.
+ */
 export const SelectAlbums = withAuth(() => {
   const selectedAlbums = useStore((store) => store.selectedAlbums);
   return (

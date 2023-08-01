@@ -3,6 +3,9 @@ const cors = require('cors');
 const path = require("path");
 const authRoutes = require('./authRoutes');
 
+/**
+ * Server class that handles all the routes and middlewares.
+ */
 class Server {
   constructor() {
     this.app = express();

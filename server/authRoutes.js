@@ -3,13 +3,16 @@ const axios = require("axios");
 
 const router = express.Router();
 
-// this can be used as a seperate module
+// This can be used as a seperate module
 const encodeFormData = (data) => {
   return Object.keys(data)
     .map((key) => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
     .join("&");
 };
 
+/**
+ * Redirects to Spotify login page with the required scopes.
+ */
 router.get("/login", async (req, res) => {
   const scope = `user-modify-playback-state
       user-read-playback-state
@@ -65,6 +68,10 @@ router.get("/logged", async (req, res) => {
     }).catch((error) => Promise.reject(error));
 });
 
+
+/**
+ * Refreshes the access token. 
+ */
 router.get("/refresh_token", async (req, res) => {
   const body = {
     grant_type: "refresh_token",

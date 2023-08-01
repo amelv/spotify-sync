@@ -14,6 +14,13 @@ export interface ConfirmationDialogRawProps {
   onContinue: () => void;
 }
 
+/**
+ * A confirmation dialog. Used to confirm the user's sync before proceeding.
+ * @prop open - Whether the dialog is open.
+ * @prop type - The type of sync.
+ * @prop onCancel - The function to call when the user cancels.
+ * @prop onContinue - The function to call when the user continues.
+ */
 export const ConfirmationDialog = ({
   open,
   type,

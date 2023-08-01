@@ -17,6 +17,16 @@ export interface TokensSlice {
   dispatchTokensAction: (token: Action) => void;
 }
 
+/**
+ * Creates a slice for managing the tokens. The slice contains the
+ * following state:
+ * - tokens: the tokens
+ * - dispatchTokensAction: a function that dispatches an action to
+ *  update the state
+ * 
+ * @param set 
+ * @returns 
+ */
 export const createTokensSlice: SliceCreator<TokensSlice> = (set) => ({
   tokens: {
     access: "",

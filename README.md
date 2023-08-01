@@ -1,3 +1,5 @@
+# Spotify Album to Songs Sync
+
 A React app that will sync your Spotify Account's Songs and Albums. Sync all albums or just a few. 
 
 ## How to use

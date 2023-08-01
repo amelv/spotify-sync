@@ -31,6 +31,13 @@ The app uses [Zustand](https://github.com/pmndrs/zustand) to manage state. The a
 - [React Router](https://reactrouter.com/)
 - [Trie Search](https://githuh.com/kesne/trie-search)
 
+## Project Status
+
+This project is a work in progress. The app is currently in a working state. The app is not yet deployed.
+
+## Support
+
+If you have any questions or issues, please open an issue or email me at [amelv@protonmail.com](mailto:amelv@protonmail.com).
 
 ## License
 

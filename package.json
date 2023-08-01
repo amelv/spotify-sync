@@ -1,6 +1,6 @@
 {
   "homepage": "https://spotify-album-songs-sync.herokuapp.com/",
-  "name": "spotify-album-songs-sync-server",
+  "name": "spotify-sync",
   "version": "0.1.0",
   "private": true,
   "type": "commonjs",

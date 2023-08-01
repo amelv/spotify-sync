@@ -38,6 +38,10 @@ router.get("/login", async (req, res) => {
   }
 });
 
+
+/**
+ * Redirects to the client with the access token and refresh token.
+ */
 router.get("/logged", async (req, res) => {
   const body = {
     grant_type: "authorization_code",

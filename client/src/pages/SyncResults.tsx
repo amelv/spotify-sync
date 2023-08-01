@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { withAuth } from "src/components/WithAuth";
 import { useSyncRequest } from "src/hooks/useSyncRequest";
 
+/**
+ * The page where we submit the sync request and display the results.
+ */
 export const SyncResults = withAuth(() => {
   const navigate = useNavigate();
   const { status, progress, refetch } = useSyncRequest();

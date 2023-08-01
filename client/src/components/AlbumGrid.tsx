@@ -5,6 +5,10 @@ interface Props {
   currentAlbums: SpotifyApi.SavedAlbumObject[];
 }
 
+/**
+ * A grid of album cards.
+ * @prop currentAlbums - The albums selected.
+ */
 export const AlbumGrid = ({ currentAlbums }: Props) => (
   <Grid
     container

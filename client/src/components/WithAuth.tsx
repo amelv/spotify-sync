@@ -15,6 +15,10 @@ const LoadingAccess = () => (
   </Container>
 );
 
+/**
+ * Higher order component that redirects to the login page if the user is not
+ * logged in.
+ */
 export const withAuth = (Component: FunctionComponent) => (props: any) => {
   const { access, refresh } = useStore((state) => state.tokens, shallow);
   const isHydrated = useHydration();

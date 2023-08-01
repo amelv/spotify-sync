@@ -27,6 +27,9 @@ export type AppState = AlbumSelectionSlice &
   StepSlice;
 export type SliceCreator<S> = StateCreator<AppState, Middleware, [], S>;
 
+/**
+ * A combination of all the slices in the store.
+ */
 const createAppState: StateCreator<AppState, Middleware, [], AppState> = (
   ...stateCreator
 ) => ({
@@ -40,6 +43,11 @@ export const useStore = create<AppState>()(
   persist(immer(createAppState), storePersistConfig)
 );
 
+/**
+ * A hook that returns true if the store has been hydrated.
+ * 
+ * @returns true if the store has been hydrated, false otherwise
+ */
 export const useHydration = () => {
   const [hydrated, setHydrated] = useState(useStore.persist.hasHydrated);
 

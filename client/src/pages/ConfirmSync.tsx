@@ -6,6 +6,9 @@ import { SelectedAlbumsList } from "src/components/SelectedAlbumsList";
 import { withAuth } from "src/components/WithAuth";
 import { useHydration, useStore } from "src/store";
 
+/**
+ * The page where we confirm the selected albums and submit the sync request.
+ */
 export const Confirmation = withAuth(() => {
   const isHydrated = useHydration();
   const syncState = useStore((store) => store.syncState);

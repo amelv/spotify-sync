@@ -41,13 +41,20 @@ export type SelectorActionType =
       type: "update_sort_option";
       payload: SortOption | "";
     };
+
 const ALBUM_INTERVAL = 24;
+
 const initialState: SelectorState = {
   searchQuery: "",
   sortOption: "",
   albumGridSize: ALBUM_INTERVAL,
 };
 
+/**
+ * Reducer for the selector state. 
+ * 
+ * @returns 
+ */
 export const useSelectorState = () => {
   return useImmerReducer<SelectorState, SelectorActionType>(
     (draft, action: SelectorActionType) => {

@@ -11,6 +11,11 @@ const ContentWrapper = styled.main`
   flex-direction: column;
 `;
 
+/**
+ * Redirects the user to the home page after logging in. Captures the access
+ * token, refresh token, and expiration time from the URL search params.
+ * @returns 
+ */
 export const LoggedInRedirect = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();

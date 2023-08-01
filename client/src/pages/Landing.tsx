@@ -4,6 +4,10 @@ import logo from "src/assets/spotify.png";
 import { withAuth } from "src/components/WithAuth";
 import { useHydration, useStore } from "src/store";
 
+/**
+ * The landing page. Displays a brief description of the app and a button to
+ * start the sync process.
+ */
 export const Landing = withAuth(() => {
   const navigate = useNavigate();
   const isHydrated = useHydration();

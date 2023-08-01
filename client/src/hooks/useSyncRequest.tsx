@@ -4,6 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { syncSongsFromAlbumsRequest } from "src/api-services";
 import { useHydration, useStore } from "src/store";
 
+/**
+ * A hook that syncs the songs from the selected albums.
+ * 
+ * @returns 
+ */
 export const useSyncRequest = () => {
   const isHydrated = useHydration();
   const accessToken = useStore((store) => store.tokens.access);

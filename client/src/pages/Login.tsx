@@ -2,6 +2,11 @@ import { Button, Container, Link, Typography } from "@mui/material";
 import process from "process";
 import spotifyIcon from "src/assets/spotify.png";
 
+/**
+ * The login page. Authenticates the user with Spotify.
+ * 
+ * @returns 
+ */
 export const Login = () => {
   return (
     <Container

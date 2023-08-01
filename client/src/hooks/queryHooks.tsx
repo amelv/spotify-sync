@@ -6,6 +6,13 @@ import { useTokenRefresh } from "src/hooks";
 import { SortOption } from "src/hooks/useSelectorState";
 import { useHydration, useStore } from "src/store";
 
+/**
+ * Sorts the albums based on the sort option.
+ * 
+ * @param sortOption 
+ * @param albums 
+ * @returns 
+ */
 const sortAlbums = (
   sortOption: SortOption,
   albums: SpotifyApi.SavedAlbumObject[]
@@ -48,6 +55,11 @@ const sortAlbums = (
   }
 };
 
+/**
+ * Gets the saved albums from the Spotify API and sorts them based on the sort option.
+ * 
+ * @returns 
+ */
 export const useSavedAlbumsQuery = () => {
   const isHydrated = useHydration();
   const accessToken = useStore((store) => store.tokens.access);

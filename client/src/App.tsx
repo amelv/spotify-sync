@@ -17,6 +17,10 @@ import { Footer } from "./components/Footer";
 import { LoggedInRedirect } from "./pages/LoggedInRedirect";
 import { SelectAlbums } from "./pages/SelectAlbums";
 
+
+/**
+ * The query client is used to cache data from the Spotify API.
+ */
 const queryClient = new QueryClient();
 
 const AppContainer = styled("div")`
@@ -33,6 +37,10 @@ const AppContainer = styled("div")`
   }
 `;
 
+/**
+ * The theme for the app. It is responsive, and 
+ * uses the Spotify green as the primary color.
+ */
 const theme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -96,6 +104,11 @@ const theme = responsiveFontSizes(
   })
 );
 
+/**
+ * This is the root of the app.
+ * It contains the theme, routing, and query client. It also
+ * contains the footer, which is always visible.
+ */
 export const App = () => {
   return (
     <StrictMode>

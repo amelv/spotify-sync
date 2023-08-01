@@ -23,6 +23,10 @@ interface Props {
   handleSelectAll: () => void;
 }
 
+/**
+ * The form to filter the albums by name and sort them.
+ * @prop handleSelectAll - The function to select all albums.
+ */
 export const FilterAlbumsForm = ({ handleSelectAll }: Props) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));

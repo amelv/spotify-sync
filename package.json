@@ -6,7 +6,7 @@
   "type": "commonjs",
   "main": "app.js",
   "engines": {
-    "node": "18.x"
+    "node": "20.x"
   },
   "dependencies": {
     "@types/react-addons-perf": "^15.4.0",

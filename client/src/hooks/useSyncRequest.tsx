@@ -25,7 +25,7 @@ export const useSyncRequest = () => {
     if (!syncState.type) {
       navigate("/");
     }
-  }, [navigate, isHydrated]);
+  }, [navigate, isHydrated, syncState.type]);
   return {
     ...useQuery(
       [Array.from(selectedAlbums.keys()).join(""), syncState.completed],

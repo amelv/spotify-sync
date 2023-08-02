@@ -1,6 +1,7 @@
 import { Button, Container, Link, Typography } from "@mui/material";
 import process from "process";
 import spotifyIcon from "src/assets/spotify.png";
+import {getSpotifyAuthURL} from "src/hooks/"
 
 /**
  * The login page. Authenticates the user with Spotify.
@@ -46,7 +47,7 @@ export const Login = () => {
         <Button
           variant="contained"
           component={Link}
-          href={process.env.REACT_APP_LOGIN_URI}
+          href={getSpotifyAuthURL()}
         >
           Login into spotify.
         </Button>

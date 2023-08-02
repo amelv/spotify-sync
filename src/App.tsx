@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
 import {
   createTheme,
@@ -116,7 +116,7 @@ export const App = () => {
         <CssBaseline />
         <AppContainer>
           <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
+            <HashRouter>
               <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/select-albums" element={<SelectAlbums />} />
@@ -125,7 +125,7 @@ export const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/loggedin" element={<LoggedInRedirect />} />
               </Routes>
-            </BrowserRouter>
+            </HashRouter>
             <Footer />
           </QueryClientProvider>
         </AppContainer>

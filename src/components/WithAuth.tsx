@@ -20,7 +20,7 @@ const LoadingAccess = () => (
  * logged in.
  */
 export const withAuth = (Component: FunctionComponent) => (props: any) => {
-  const { access, refresh } = useStore((state) => state.tokens, shallow);
+  const { access } = useStore((state) => state.tokens, shallow);
   const isHydrated = useHydration();
   const location = useLocation();
   const navigate = useNavigate();
@@ -28,10 +28,10 @@ export const withAuth = (Component: FunctionComponent) => (props: any) => {
   useTokenRefresh();
 
   useEffect(() => {
-    if (isHydrated && !access && !refresh) {
+    if (isHydrated && !access) {
       navigate("/login", { replace: true, state: { from: location } });
     }
-  }, [access, refresh, navigate, location, isHydrated]);
+  }, [access, navigate, location, isHydrated]);
 
   return isHydrated ? <Component {...props} /> : <LoadingAccess />;
 };

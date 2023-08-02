@@ -24,15 +24,14 @@ export const LoggedInRedirect = () => {
 
   useEffect(() => {
     const accessToken = searchParams.get("access_token");
-    const refreshToken = searchParams.get("refresh_token");
     const expiresIn = searchParams.get("expires_in");
+    const stateKey = searchParams.get("state");
 
-    if (isHydrated && accessToken && refreshToken && expiresIn) {
+    if (isHydrated && accessToken && expiresIn) {
       dispatchTokensAction({
         type: "set",
         payload: {
           access: accessToken,
-          refresh: refreshToken,
           expiresIn,
           expiresAt: new Date(Date.now() + Number(expiresIn)),
         },

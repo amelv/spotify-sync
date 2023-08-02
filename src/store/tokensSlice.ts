@@ -2,7 +2,6 @@ import { SliceCreator } from "src/store";
 
 interface Tokens {
   access: string;
-  refresh: string;
   expiresIn: string;
   expiresAt?: Date;
 }
@@ -30,7 +29,6 @@ export interface TokensSlice {
 export const createTokensSlice: SliceCreator<TokensSlice> = (set) => ({
   tokens: {
     access: "",
-    refresh: "",
     expiresIn: "",
   },
   dispatchTokensAction: ({ type, payload }) => set({ tokens: payload }),

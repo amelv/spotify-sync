@@ -1,24 +1,51 @@
 import axios from "axios";
+import process from "process";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useHydration, useStore } from "src/store";
 import shallow from "zustand/shallow";
+
+export const getSpotifyAuthURL = () => {
+  const client_id = process.env.REACT_APP_CLIENT_ID?.toString() ?? '';
+  const redirect_uri = process.env.REACT_APP_REDIRECT_URI?.toString() ?? '';
+  const state = Math.ceil(Math.random() * 16).toString(); 
+
+  localStorage.setItem('state', state);
+  const scope = `user-modify-playback-state
+      user-read-playback-state
+      user-read-currently-playing
+      user-library-modify
+      user-library-read
+      user-top-read
+      playlist-read-private
+      playlist-modify-public`;
+
+  let url = 'https://accounts.spotify.com/authorize';
+  url += '?response_type=token';
+  url += '&client_id=' + encodeURIComponent(client_id);
+  url += '&scope=' + encodeURIComponent(scope);
+  url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
+  url += '&state=' + encodeURIComponent(state);
+  return url;
+}
 
 /**
  * Custom hook that refreshes the access token when it expires.
  */
 export const useTokenRefresh = () => {
   const isHydrated = useHydration();
-  const { access, refresh, expiresIn, expiresAt } = useStore(
+  const { access, expiresIn, expiresAt } = useStore(
     (store) => store.tokens,
     shallow
   );
   const dispatchTokensAction = useStore((store) => store.dispatchTokensAction);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isHydrated || !refresh || !expiresAt) {
+    if (!isHydrated || !expiresAt) {
       return;
     }
-
+    /*
     let refreshIsCancelled = false;
 
     const refreshCallback = async () => {
@@ -45,12 +72,10 @@ export const useTokenRefresh = () => {
         }
       }
     };
+   */
 
     if (!access || (expiresAt && Date.now() >= expiresAt.getTime())) {
-      refreshCallback();
+      navigate('/login'); 
     }
-    return () => {
-      refreshIsCancelled = true;
-    };
-  }, [access, refresh, expiresIn, expiresAt, dispatchTokensAction, isHydrated]);
+  }, [access, expiresIn, expiresAt, isHydrated, navigate]);
 };

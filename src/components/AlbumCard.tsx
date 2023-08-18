@@ -175,3 +175,5 @@ export const AlbumCard = memo(
   },
   (prevProps, nextProps) => prevProps.album.id === nextProps.album.id
 )
+
+AlbumCard.displayName = 'AlbumCard'

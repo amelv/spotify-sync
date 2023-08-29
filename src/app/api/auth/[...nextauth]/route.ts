@@ -58,7 +58,8 @@ const authOpts: NextAuthOptions = {
         }
       }
     }
-  }
+  },
+  secret: `${SPOTIFY_CLIENT_SECRET}`
 }
 
 const handler = NextAuth(authOpts)

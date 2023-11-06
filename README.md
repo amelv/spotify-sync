@@ -31,7 +31,6 @@ The app uses [Zustand](https://github.com/pmndrs/zustand) to manage state. The a
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 - [Zustand](https://github.com/pmndrs/zustand)
 - [Material UI](https://material-ui.com/)
-- [React Router](https://reactrouter.com/)
 - [Trie Search](https://githuh.com/kesne/trie-search)
 
 ## Project Status

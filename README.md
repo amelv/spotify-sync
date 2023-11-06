@@ -1,6 +1,6 @@
 # Spotify Sync ⌰
 
-A React app that will sync your Spotify Account's Songs and Albums. Sync all albums or just a few. 
+A Next.JS app that will sync your Spotify Account's Songs and Albums. Sync all albums or just a few. 
 
 ## How to use
 
@@ -27,6 +27,7 @@ The app uses [Zustand](https://github.com/pmndrs/zustand) to manage state. The a
 ## Built with
 
 - [React](https://reactjs.org/)
+- [Next.JS](https://nextjs.org/)
 - [Spotify Web API](https://developer.spotify.com/documentation/web-api/)
 - [Zustand](https://github.com/pmndrs/zustand)
 - [Material UI](https://material-ui.com/)

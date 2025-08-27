@@ -5,7 +5,7 @@ import { useCallback } from 'react'
 import { useQuery } from 'react-query'
 import { getSavedAlbums, SavedAlbums } from '@/api-services'
 import { SortOption } from '@/hooks/useSelectorState'
-import { useHydration, useStore } from '@/store'
+import { useStore } from '@/store'
 import { useSession } from 'next-auth/react'
 import { getSessionToken } from '@/lib/utils'
 
@@ -64,7 +64,6 @@ const sortAlbums = (
  * @returns
  */
 export const useSavedAlbumsQuery = () => {
-  const isHydrated = useHydration()
   const { data: session } = useSession()
   const accessToken = getSessionToken(session)?.accessToken
   const searchQuery = useStore(store => store.searchQuery)
@@ -98,9 +97,9 @@ export const useSavedAlbumsQuery = () => {
   return useQuery<
     SpotifyApi.PagingObject<SpotifyApi.SavedAlbumObject> | undefined
   >(
-    ['saved-albums', isHydrated, accessToken],
+    ['saved-albums',  accessToken],
     useCallback(async () => {
-      if (!isHydrated || !accessToken) {
+      if (!accessToken) {
         return undefined
       }
       try {
@@ -110,7 +109,7 @@ export const useSavedAlbumsQuery = () => {
       } catch (error) {
         return Promise.reject(error)
       }
-    }, [isHydrated, accessToken]),
+    }, [accessToken]),
     {
       select: selectAlbumsFromQuery,
       keepPreviousData: false,

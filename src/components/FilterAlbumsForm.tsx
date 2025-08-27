@@ -19,7 +19,7 @@ import {
 } from '@mui/material'
 import { ChangeEvent, FormEvent, useCallback, useMemo, useState } from 'react'
 import { SortOption } from '@/hooks/useSelectorState'
-import { useHydration, useStore } from '@/store'
+import { useStore } from '@/store'
 
 interface Props {
   handleSelectAll: () => void
@@ -39,7 +39,6 @@ export const FilterAlbumsForm = ({ handleSelectAll }: Props) => {
 
   const [searchInputValue, setSearchInputValue] = useState(searchQuery)
   const [hideFormInputs, setHideFormInputs] = useState(isMobile)
-  const isHydrated = useHydration()
 
   const debouncedQueryDisptach = useMemo(
     () =>
@@ -139,7 +138,6 @@ export const FilterAlbumsForm = ({ handleSelectAll }: Props) => {
         <Collapse in={isMobile ? !hideFormInputs : true}>
           <Select
             value={sortOption}
-            placeholder='Select sort option'
             onChange={event =>
               dispatch({
                 type: 'update-sort',
@@ -163,7 +161,6 @@ export const FilterAlbumsForm = ({ handleSelectAll }: Props) => {
             }}
           >
             <Button
-              disabled={!isHydrated}
               variant='outlined'
               color='secondary'
               onClick={() => dispatch({ type: 'clear', payload: null })}
@@ -248,7 +245,6 @@ export const FilterAlbumsForm = ({ handleSelectAll }: Props) => {
             }}
           >
             <Button
-              disabled={!isHydrated}
               variant='outlined'
               color='info'
               onClick={() => dispatch({ type: 'clear', payload: null })}

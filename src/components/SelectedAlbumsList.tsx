@@ -14,23 +14,22 @@ import {
   Paper
 } from '@mui/material'
 import { ChangeEvent, useMemo, useState } from 'react'
-import { useHydration, useStore } from '@/store'
+import { useStore } from '@/store'
 import TrieSearch from 'trie-search'
 
 /**
  * The list of selected albums. The list is searchable. Clicking on an album will expand it to show its tracks.
  */
 export const SelectedAlbumsList = () => {
-  const isHydrated = useHydration()
   const selectedAlbums = useStore(store => store.selectedAlbums)
   const [openItems, setOpenItems] = useState<Record<string, boolean>>({})
   const [searchInput, setSearchInput] = useState('')
   const handleOpen = (id: string) => () =>
     setOpenItems(items => ({ ...items, [id]: !items[id] }))
-
+  
   const selectedAlbumDictionary = useMemo(() => {
     const dictionary = new TrieSearch<SpotifyApi.AlbumObjectFull>()
-    selectedAlbums.forEach(album => {
+    Object.values(selectedAlbums).forEach(album => {
       const key = `${album.name} ${album.artists.reduce(
         (names, artist) => `${names}${artist.name} `,
         ''
@@ -46,7 +45,7 @@ export const SelectedAlbumsList = () => {
   const searchMatchAlbums: SpotifyApi.AlbumObjectFull[] = useMemo(() => {
     const duplicateMap: Record<string, boolean> = {}
     return searchInput === ''
-      ? Array.from(selectedAlbums.values())
+      ? Array.from(Object.values(selectedAlbums))
       : selectedAlbumDictionary
           .search(searchInput.toLocaleLowerCase())
           .filter((album: SpotifyApi.AlbumObjectFull) => {
@@ -130,8 +129,7 @@ export const SelectedAlbumsList = () => {
         </ListSubheader>
       }
     >
-      {isHydrated &&
-        searchMatchAlbums.map((album, index) => (
+      {searchMatchAlbums.map((album, index) => (
           <div key={`${album.id}-${index}`}>
             <ListItemButton
               sx={{ fontSize: '1rem' }}

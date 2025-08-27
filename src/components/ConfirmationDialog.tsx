@@ -1,6 +1,6 @@
 'use client'
 
-import { useHydration, useStore } from '@/store'
+import { useStore } from '@/store'
 import {
   Button,
   Container,
@@ -28,7 +28,6 @@ export interface ConfirmationDialogRawProps {
  * @prop onContinue - The function to call when the user continues.
  */
 export const ConfirmationDialog = () => {
-  const isHydrated = useHydration()
   const router = useRouter()
   const syncState = useStore(store => store.syncState)
   const setSyncState = useStore(store => store.setSyncState)
@@ -67,7 +66,6 @@ export const ConfirmationDialog = () => {
         <Button
           variant='contained'
           color='error'
-          disabled={!isHydrated}
           onClick={handleDelete}
         >
           Delete
@@ -75,7 +73,6 @@ export const ConfirmationDialog = () => {
         <Button
           variant='contained'
           color='success'
-          disabled={!isHydrated}
           onClick={handleSave}
         >
           Save

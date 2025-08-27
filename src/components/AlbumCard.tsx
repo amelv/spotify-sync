@@ -12,8 +12,8 @@ import {
 import { FastAverageColor } from 'fast-average-color'
 import { memo } from 'react'
 import { useQuery } from 'react-query'
-import { useHydration, useStore } from '@/store'
-import shallow from 'zustand/shallow'
+import { useStore } from '@/store'
+import { useShallow } from 'zustand/shallow'
 
 interface AlbumCardProps {
   album: SpotifyApi.AlbumObjectFull
@@ -44,15 +44,16 @@ export const AlbumCard = memo(
       refetchOnWindowFocus: false,
       cacheTime: Infinity
     })
+    
     console.log(bgColor)
     const [isSelected, dispatchAlbumSelectionAction] = useStore(
-      store => [
-        !!store.selectedAlbums.get(album.id),
-        store.dispatchAlbumSelectionAction
-      ],
-      shallow
+      useShallow(
+        (store) => [
+          !!store.selectedAlbums[album.id],
+          store.dispatchAlbumSelectionAction
+        ]
+      )
     )
-    const isHydrated = useHydration()
     const handleToggle = () => {
       dispatchAlbumSelectionAction({
         type: isSelected ? 'remove' : 'select',
@@ -112,7 +113,6 @@ export const AlbumCard = memo(
             height: 372,
             position: 'relative'
           })}
-          disabled={!isHydrated}
           onClick={handleToggle}
         >
           <Fade
@@ -123,7 +123,7 @@ export const AlbumCard = memo(
             timeout={{ enter: 300, exit: 100 }}
           >
             <CheckCircleIcon
-              sx={theme => ({
+              sx={(theme: { palette: { secondary: { main: any } } }) => ({
                 position: 'absolute',
                 width: 120,
                 height: 120,

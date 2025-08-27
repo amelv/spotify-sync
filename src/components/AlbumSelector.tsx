@@ -5,7 +5,7 @@ import { useCallback, useMemo } from 'react'
 import { AlbumGrid } from '@/components/AlbumGrid'
 import { FilterAlbumsForm } from '@/components/FilterAlbumsForm'
 import { useSavedAlbumsQuery } from '@/hooks/queryHooks'
-import { useHydration, useStore } from '@/store'
+import {  useStore } from '@/store'
 import { getSavedAlbums } from '@/api-services'
 
 const ALBUM_INTERVAL = 24
@@ -15,7 +15,6 @@ const ALBUM_INTERVAL = 24
  * @returns
  */
 export const AlbumSelector = () => {
-  const isHydrated = useHydration()
   const dispatch = useStore(store => store.dispatchAlbumSelectionAction)
   const albumGridSize = useStore(store => store.albumGridSize)
 
@@ -38,15 +37,14 @@ export const AlbumSelector = () => {
   }, [totalAlbums, dispatch])
 
   const handleSelectAll = useCallback(() => {
-    if (isHydrated) {
       dispatch({
         type: 'select-all',
         payload: currentAlbums.map(({ album }) => album)
       })
-    }
-  }, [currentAlbums, isHydrated, dispatch])
+    
+  }, [currentAlbums,  dispatch])
 
-  return isHydrated ? (
+  return (
     <>
       <FilterAlbumsForm handleSelectAll={handleSelectAll} />
       {isLoading || isFetching ? null : <AlbumGrid {...{ currentAlbums }} />}
@@ -59,5 +57,5 @@ export const AlbumSelector = () => {
         </Button>
       )}
     </>
-  ) : null
+  )
 }

@@ -3,7 +3,7 @@
 import { startTransition, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { syncSongsFromAlbumsRequest } from '@/api-services'
-import { useHydration, useStore } from '@/store'
+import { useStore } from '@/store'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { getSessionToken } from '@/lib/utils'
@@ -14,7 +14,6 @@ import { getSessionToken } from '@/lib/utils'
  * @returns
  */
 export const useSyncRequest = () => {
-  const isHydrated = useHydration()
   const { data: session } = useSession()
   const accessToken = getSessionToken(session)?.accessToken
 
@@ -24,17 +23,13 @@ export const useSyncRequest = () => {
   const router = useRouter()
   const [progress, setProgress] = useState(0)
   useEffect(() => {
-    if (!isHydrated) {
-      return
-    }
-
     if (!syncState.type) {
       router.push('/')
     }
-  }, [router, isHydrated, syncState.type])
+  }, [router, syncState.type])
   return {
     ...useQuery(
-      [Array.from(selectedAlbums.keys()).join(''), syncState.completed],
+      [Array.from(Object.keys(selectedAlbums)).join(''), syncState.completed],
       {
         queryFn: async () => {
           try {
@@ -52,7 +47,7 @@ export const useSyncRequest = () => {
             Promise.reject(error)
           }
         },
-        enabled: isHydrated && !syncState.completed,
+        enabled: !syncState.completed,
         cacheTime: Infinity,
         refetchOnWindowFocus: false
       }

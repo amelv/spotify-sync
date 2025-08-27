@@ -95,6 +95,7 @@ export const syncSongsFromAlbumsRequest = async (
   onProgress: (value: number) => void,
   albums?: Map<string, SpotifyApi.AlbumObjectFull>
 ): Promise<AxiosResponse<SpotifyApi.SaveTracksForUserResponse, any>[]> => {
+  
   const reduceAlbumsToTrackSyncPromises = (
     albums: Array<SpotifyApi.AlbumObjectFull>
   ) =>
@@ -115,14 +116,15 @@ export const syncSongsFromAlbumsRequest = async (
                 accessToken,
                 urlEndpoint: `me/tracks`,
                 method: action === 'save' ? 'PUT' : 'DELETE',
-                data: JSON.stringify(
-                  album.tracks.items
-                    .slice(50 * idx, 50 * (idx + 1))
-                    .map(track => track.id)
-                )
+                data: JSON.stringify({
+                    'ids': 
+                    album.tracks.items
+                      .slice(50 * idx, 50 * (idx + 1))
+                      .map(track => track.id)
+                  
+                })
               })
               .then(data => {
-                console.log(index / (length - 1))
                 onProgress(index / (length - 1))
                 return data
               })
@@ -130,11 +132,12 @@ export const syncSongsFromAlbumsRequest = async (
       ],
       [] as Promise<any>[]
     )
+
   try {
     // If array of albums to sync is provided
     if (albums) {
       return Promise.all(
-        reduceAlbumsToTrackSyncPromises(Array.from(albums.values()))
+        reduceAlbumsToTrackSyncPromises(Array.from(Object.values(albums)))
       )
     }
 

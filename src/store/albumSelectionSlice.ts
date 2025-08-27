@@ -15,7 +15,7 @@ interface Action {
 }
 
 export interface AlbumSelectionSlice {
-  selectedAlbums: Map<string, SpotifyApi.AlbumObjectFull>;
+  selectedAlbums: Record<string, SpotifyApi.AlbumObjectFull>;
   albumGridSize: number;
   searchQuery: string;
   sortOption: SortOption | "";
@@ -41,7 +41,7 @@ const ALBUM_INTERVAL = 24;
 export const createAlbumSelectionSlice: SliceCreator<AlbumSelectionSlice> = (
   set
 ) => ({
-  selectedAlbums: new Map<string, SpotifyApi.AlbumObjectFull>(),
+  selectedAlbums: {},
   albumGridSize: ALBUM_INTERVAL,
   searchQuery: "",
   sortOption: "",
@@ -49,21 +49,25 @@ export const createAlbumSelectionSlice: SliceCreator<AlbumSelectionSlice> = (
     set((state) => {
       switch (type) {
         case "select":
-          state.selectedAlbums.set(payload.id, payload);
+           state.selectedAlbums = {
+            ...state.selectedAlbums,
+            [payload.id]: payload,
+          };
           return;
         case "select-all":
-          state.selectedAlbums = new Map(
-            payload.map((album: SpotifyApi.AlbumObjectFull) => [
-              album.id,
-              album,
-            ])
+          state.selectedAlbums = payload.reduce(
+            (acc: Record<string, SpotifyApi.AlbumObjectFull>, album: SpotifyApi.AlbumObjectFull) => {
+              acc[album.id] = album;
+              return acc;
+            },
+            {}
           );
           return;
         case "remove":
-          state.selectedAlbums.delete(payload.id);
+          delete state.selectedAlbums[payload.id];
           return;
         case "clear":
-          state.selectedAlbums.clear();
+          state.selectedAlbums = {};
           return;
         case "increment-grid-size":
           const albumsRemaining = payload - state.albumGridSize;

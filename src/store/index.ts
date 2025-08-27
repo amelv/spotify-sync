@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import create, { StateCreator } from 'zustand'
+import { create, StateCreator } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { immer } from 'zustand/middleware/immer'
 
@@ -40,29 +40,3 @@ const createAppState: StateCreator<AppState, Middleware, [], AppState> = (
 export const useStore = create<AppState>()(
   persist(immer(createAppState), storePersistConfig)
 )
-
-/**
- * A hook that returns true if the store has been hydrated.
- *
- * @returns true if the store has been hydrated, false otherwise
- */
-export const useHydration = () => {
-  const { status } = useSession()
-  const [hydrated, setHydrated] = useState(useStore.persist.hasHydrated)
-
-  useEffect(() => {
-    const unsubHydrate = useStore.persist.onHydrate(() => setHydrated(false))
-    const unsubFinishHydration = useStore.persist.onFinishHydration(() =>
-      setHydrated(true)
-    )
-
-    setHydrated(useStore.persist.hasHydrated())
-
-    return () => {
-      unsubHydrate()
-      unsubFinishHydration()
-    }
-  }, [])
-
-  return hydrated && status !== 'loading'
-}

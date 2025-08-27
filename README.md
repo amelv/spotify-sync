@@ -12,8 +12,8 @@ A Next.JS app that will sync your Spotify Account's Songs and Albums. Sync all a
 3. Add `http://localhost:3000` as a Redirect URI in the Spotify App
 4. Create a `.env` file in the root of the project and add the following:
 ```
-REACT_APP_CLIENT_ID=<YOUR_SPOTIFY_APP_CLIENT_ID>
-REACT_APP_REDIRECT_URI=http://localhost:3000
+SPOTIFY_CLIENT_SECRET=<YOUR_SPOTIFY_CLIENT_SECRET>
+SPOTIFY_CLIENT_ID=<YOUR_SPOTIFY_CLIENT_ID>
 ```
 5. Run `yarn install` to install dependencies
 6. Run `yarn dev` to start the app

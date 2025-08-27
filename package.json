@@ -22,7 +22,6 @@
     "eslint-config-next": "13.4.16",
     "fast-average-color": "^9.5.0",
     "fast-sort": "^3.4.1",
-    "idb-keyval": "^6.2.2",
     "immer": "^10.1.1",
     "limiter": "^3.0.0",
     "next": "14",

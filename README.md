@@ -2,6 +2,8 @@
 
 A Next.JS app that will sync your Spotify Account's Songs and Albums. Sync all albums or just a few. 
 
+[App Link](https://spotify-sync-nine.vercel.app/)
+
 <img width="1598" height="729" alt="Screenshot from 2025-08-27 08-50-45" src="https://github.com/user-attachments/assets/9f2fd2f4-3eba-4f67-88ec-5e18f250be90" />
 
 

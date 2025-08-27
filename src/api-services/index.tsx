@@ -93,7 +93,7 @@ export const syncSongsFromAlbumsRequest = async (
   accessToken: string,
   action: 'save' | 'delete',
   onProgress: (value: number) => void,
-  albums?: Map<string, SpotifyApi.AlbumObjectFull>
+  albums?: Record<string, SpotifyApi.AlbumObjectFull>
 ): Promise<AxiosResponse<SpotifyApi.SaveTracksForUserResponse, any>[]> => {
   
   const reduceAlbumsToTrackSyncPromises = (

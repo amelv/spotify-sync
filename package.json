@@ -24,7 +24,7 @@
     "fast-sort": "^3.4.1",
     "immer": "^10.1.1",
     "limiter": "^3.0.0",
-    "next": "14",
+    "next": "16",
     "next-auth": "^4.23.0",
     "react": "18",
     "react-dom": "18",

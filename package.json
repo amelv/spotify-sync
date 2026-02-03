@@ -18,7 +18,7 @@
     "@types/react-dom": "18.2.7",
     "@types/spotify-api": "^0.0.22",
     "axios": "^1.11.0",
-    "eslint": "8.47.0",
+    "eslint": "9.26.0",
     "eslint-config-next": "13.4.16",
     "fast-average-color": "^9.5.0",
     "fast-sort": "^3.4.1",
